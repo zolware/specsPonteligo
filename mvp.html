@@ -8,13 +8,13 @@
     
     <title>Minimum Viable Product &#8212; Python  documentation</title>
     
-    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/style.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/style.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
+        URL_ROOT:    './',
         VERSION:     '',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
@@ -22,18 +22,18 @@
         SOURCELINK_SUFFIX: '.txt'
       };
     </script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script type="text/javascript" src="../_static/example.js"></script>
-    <link rel="shortcut icon" href="../_static/logo.ico"/>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
+    <script type="text/javascript" src="_static/example.js"></script>
+    <link rel="shortcut icon" href="_static/logo.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="General Information" href="general/index.html" />
     <link rel="prev" title="Pnteligo Specifications" href="index.html" />
    
-  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
@@ -45,7 +45,7 @@
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
             <p class="logo"><a href="index.html">
-              <img class="logo" src="../_static/logo_200.png" alt="Logo"/>
+              <img class="logo" src="_static/logo_200.png" alt="Logo"/>
             </a></p>
 <h3><a href="https://www.openproject.org">OpenProject Wiki</a></h3><h3>Navigation</h3>
 <ul class="current">
@@ -88,7 +88,7 @@
 
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
-    <form class="search" action="../search.html" method="get">
+    <form class="search" action="search.html" method="get">
       <div><input type="text" name="q" /></div>
       <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
@@ -167,21 +167,23 @@
 </div>
 <div class="section" id="proposed-technology">
 <h2>Proposed Technology<a class="headerlink" href="#proposed-technology" title="Permalink to this headline">¶</a></h2>
-<p>Coding languages: Python and javascript (user interface)
-Back-end Framework: Django
-Web Servers: Nginx
-WSGI Server: Gunicorn
-Hosting: Heroku hobby account ($7/month)
-Storage: Amazon S3 <a class="reference external" href="https://aws.amazon.com/s3/">https://aws.amazon.com/s3/</a>
-Templating: jinja2
-Front-end Framework: Bootsrap
-Email backend: mailgun
-Database: postgresql
-Unit Testing: pytest and tox
-Integration testing: selenium + phantomJS
-Continuous integration: Travis CI
-Code coverage: codecov
-SSL certificate: DigiCert or another competitor.</p>
+<ul class="simple">
+<li>Coding languages: Python and javascript (user interface)</li>
+<li>Back-end Framework: <a class="reference external" href="https://www.djangoproject.com">Django</a></li>
+<li>Web Servers: <a class="reference external" href="https://nginx.org/en/">Nginx</a></li>
+<li>WSGI Server: <a class="reference external" href="http://gunicorn.org">Gunicorn</a></li>
+<li>Hosting: <a class="reference external" href="https://www.heroku.com">Heroku</a> hobby account ($7/month)</li>
+<li>Storage: <a class="reference external" href="https://aws.amazon.com/s3/">Amazon S3</a></li>
+<li>Templating: <a class="reference external" href="http://jinja.pocoo.org">Jinja2</a></li>
+<li>Front-end Framework: <a class="reference external" href="http://getbootstrap.com">Bootstrap</a></li>
+<li>Email backend: <a class="reference external" href="https://www.mailgun.com">mailgun</a></li>
+<li>Database: <a class="reference external" href="https://www.postgresql.org">postgresql</a></li>
+<li>Unit Testing: <a class="reference external" href="http://doc.pytest.org/en/latest/">pytest</a> and <a class="reference external" href="https://tox.readthedocs.io/en/latest/">tox</a></li>
+<li>Integration testing: <a class="reference external" href="http://www.seleniumhq.org">selenium</a> + <a class="reference external" href="http://phantomjs.org">phantomJS</a></li>
+<li>Continuous integration: <a class="reference external" href="https://travis-ci.org">Travis CI</a></li>
+<li>Code coverage: <a class="reference external" href="https://codecov.io">codecov</a></li>
+<li>SSL certificate: <a class="reference external" href="https://www.digicert.com">DigiCert</a> or another competitor.</li>
+</ul>
 </div>
 <div class="section" id="future-improvments">
 <h2>Future improvments<a class="headerlink" href="#future-improvments" title="Permalink to this headline">¶</a></h2>
@@ -202,20 +204,12 @@ SSL certificate: DigiCert or another competitor.</p>
 <h2>User Interface<a class="headerlink" href="#user-interface" title="Permalink to this headline">¶</a></h2>
 <p>Here are some basic screenshots</p>
 <div class="align-center figure" id="f-signin">
-<a class="reference internal image-reference" href="../_images/mvp_signIn.png"><img alt="alternate text" src="../_images/mvp_signIn.png" style="width: 775px; height: 600px;" /></a>
+<a class="reference internal image-reference" href="_images/mvp_signIn.png"><img alt="alternate text" src="_images/mvp_signIn.png" style="width: 775px; height: 600px;" /></a>
 <p class="caption"><span class="caption-number">Figure 1 </span><span class="caption-text">The <code class="docutils literal"><span class="pre">Sign</span> <span class="pre">In</span></code> page is the default page for the first visit on www.ponteligo.com.</span></p>
 </div>
 <div class="align-center figure" id="f-signup">
-<a class="reference internal image-reference" href="../_images/mvp_signUp.png"><img alt="alternate text" src="../_images/mvp_signUp.png" style="width: 775px; height: 600px;" /></a>
-<p class="caption"><span class="caption-number">Figure 2 </span><span class="caption-text">The <code class="docutils literal"><span class="pre">Sign</span> <span class="pre">Up</span></code> page uses email validation to register a new user. A basic <a class="reference external" href="https://www.mailgun.com">mailgun</a> account include 10,000 free emails every month.</span></p>
-</div>
-<div class="align-center figure" id="f-emulator">
-<a class="reference internal image-reference" href="../_images/mvp_sensorEmulator.png"><img alt="alternate text" src="../_images/mvp_sensorEmulator.png" style="width: 775px; height: 600px;" /></a>
-<p class="caption"><span class="caption-number">Figure 3 </span><span class="caption-text">The Generation of data.</span></p>
-</div>
-<div class="align-center figure" id="f-results">
-<a class="reference internal image-reference" href="../_images/mvp_home.png"><img alt="alternate text" src="../_images/mvp_home.png" style="width: 775px; height: 600px;" /></a>
-<p class="caption"><span class="caption-number">Figure 4 </span><span class="caption-text">The home page display the true, predicted, and real signals when the <code class="docutils literal"><span class="pre">Launch</span> <span class="pre">App</span></code> button is pressed.</span></p>
+<a class="reference internal image-reference" href="_images/mvp_signUp.png"><img alt="alternate text" src="_images/mvp_signUp.png" style="width: 775px; height: 600px;" /></a>
+<p class="caption"><span class="caption-number">Figure 2 </span><span class="caption-text">The <code class="docutils literal"><span class="pre">Sign</span> <span class="pre">Up</span></code> page uses email validation to register a new user. A basic Mailgun account include 10,000 free emails every month.</span></p>
 </div>
 </div>
 <div class="section" id="deployment">
@@ -240,7 +234,6 @@ SSL certificate: DigiCert or another competitor.</p>
 <tr><td class="label"><a class="fn-backref" href="#id2">[Phil2010]</a></td><td><a class="reference external" href="https://www.amazon.com/Kalman-Filter-Beginners-MATLAB-Examples/dp/1463648359">Phil Kim, Kalman Filter for Beginners with MATLAB Examples. A-JIN Publishing Company, 2010.</a></td></tr>
 </tbody>
 </table>
-<p>Two scoop of Django.</p>
 </div>
 </div>
 
