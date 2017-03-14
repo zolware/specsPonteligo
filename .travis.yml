@@ -22,4 +22,4 @@ script:
   - cmake ..
   - pip install ghp-import
   - make doc
-  - ghp-import -n -p -m "Update gh-pages." doc/_build/ponteligo/
+  - ghp-import -n -p -m "Update gh-pages." doc/_build/
