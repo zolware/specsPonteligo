@@ -18,7 +18,7 @@ extensions = [
     'sphinx.ext.viewcode',
     'sphinx.ext.todo',
     #'sphinx.ext.autosectionlabel',
-    'bokeh.sphinxext.bokeh_plot',
+    #'bokeh.sphinxext.bokeh_plot',
     #'bokeh.sphinxext.bokeh_autodoc',
     #'bokeh.sphinxext.sitemap',
 ]
