@@ -76,21 +76,21 @@ The zolware package will be cloned from the GitHub repository and installed on t
 Proposed Technology
 -------------------
 
-Coding languages: Python and javascript (user interface)
-Back-end Framework: Django
-Web Servers: Nginx
-WSGI Server: Gunicorn
-Hosting: Heroku hobby account ($7/month)
-Storage: Amazon S3 https://aws.amazon.com/s3/
-Templating: jinja2
-Front-end Framework: Bootsrap
-Email backend: mailgun
-Database: postgresql
-Unit Testing: pytest and tox 
-Integration testing: selenium + phantomJS
-Continuous integration: Travis CI
-Code coverage: codecov
-SSL certificate: DigiCert or another competitor.
+- Coding languages: Python and javascript (user interface)
+- Back-end Framework: `Django <https://www.djangoproject.com>`_
+- Web Servers: `Nginx <https://nginx.org/en/>`_
+- WSGI Server: `Gunicorn <http://gunicorn.org>`_
+- Hosting: `Heroku <https://www.heroku.com>`_ hobby account ($7/month)
+- Storage: `Amazon S3 <https://aws.amazon.com/s3/>`_
+- Templating: `Jinja2 <http://jinja.pocoo.org>`_
+- Front-end Framework: `Bootstrap <http://getbootstrap.com>`_
+- Email backend: `mailgun <https://www.mailgun.com>`_
+- Database: `postgresql <https://www.postgresql.org>`_
+- Unit Testing: `pytest <http://doc.pytest.org/en/latest/>`_ and `tox <https://tox.readthedocs.io/en/latest/>`_ 
+- Integration testing: `selenium <http://www.seleniumhq.org>`_ + `phantomJS <http://phantomjs.org>`_
+- Continuous integration: `Travis CI <https://travis-ci.org>`_
+- Code coverage: `codecov <https://codecov.io>`_
+- SSL certificate: `DigiCert <https://www.digicert.com>`_ or another competitor.
 
 
 Future improvments
@@ -112,7 +112,7 @@ User Interface
 
 Here are some basic screenshots
 
-.. figure:: ../../images/mvp_signIn.png
+.. figure:: ../images/mvp_signIn.png
     :name: f_signin
     :width: 775px
     :align: center
@@ -122,7 +122,7 @@ Here are some basic screenshots
     
     The ``Sign In`` page is the default page for the first visit on www.ponteligo.com.
 
-.. figure:: ../../images/mvp_signUp.png
+.. figure:: ../images/mvp_signUp.png
     :name: f_signup
     :width: 775px
     :align: center
@@ -130,27 +130,7 @@ Here are some basic screenshots
     :alt: alternate text
     :figclass: align-center
     
-    The ``Sign Up`` page uses email validation to register a new user. A basic `mailgun <https://www.mailgun.com>`_ account include 10,000 free emails every month.
-
-.. figure:: ../../images/mvp_sensorEmulator.png
-    :name: f_emulator
-    :width: 775px
-    :align: center
-    :height: 600px
-    :alt: alternate text
-    :figclass: align-center
-    
-    The Generation of data.
-
-.. figure:: ../../images/mvp_home.png
-    :name: f_results
-    :width: 775px
-    :align: center
-    :height: 600px
-    :alt: alternate text
-    :figclass: align-center
-    
-    The home page display the true, predicted, and real signals when the ``Launch App`` button is pressed.
+    The ``Sign Up`` page uses email validation to register a new user. A basic Mailgun account include 10,000 free emails every month.
 
 
 Deployment
@@ -170,5 +150,3 @@ References
 .. [Roy2015] `Daniel and Audrey Roy, Two Scoops of Django: Best Practices for Django 1.8, third edition. Two scoops press, 2015 <https://www.amazon.com/Two-Scoops-Django-Best-Practices/dp/0981467342>`_
 
 .. [Phil2010] `Phil Kim, Kalman Filter for Beginners with MATLAB Examples. A-JIN Publishing Company, 2010. <https://www.amazon.com/Kalman-Filter-Beginners-MATLAB-Examples/dp/1463648359>`_
-
-Two scoop of Django.
