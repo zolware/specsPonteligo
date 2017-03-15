@@ -22,11 +22,12 @@ Description
 
 The proof of concept would be a simple web application with the following components:
 
-- A home page (user view) with a menu bar
+- A home page with saved models
 - A sign In/Sign Up interface
-- An basic application database (user details, user data, user state-space models, ...)
 - A sensor emulator
 - A model constructor
+- A user view displaying the results of the prediction
+- An basic application database (user details, user data, user state-space models, ...)
 - An admin interface
 
 The web application will provide a GUI for the engineer to construct a two-state-spaces model, generate a static data stream composed of two uncorelated time series, and lauch the application to observe the results in the user view. Note that there will be no hiden state and learning algorithm procedures in the MVP. The user view will only display the data (predicted, true and real) where the predicted value will be obtained from a simple linear Kalman filter. Only one solver option would be available, i.e. the LU method.
@@ -40,7 +41,7 @@ The data stream will consist of two "static" signals, i.e. offline mode. The app
 2. Timestep size :math:`\Delta t`.
 3. Number of measurements :math:`N`.
 4. Sensor labels (one for each signal).
-5. The standard deviation of the noise for both signals :math:`R_{11}`, and :math:`R_{22}`. We assume that the noise is a random normal number of mean 0.
+5. The standard deviation of the covariance noise matrix :math:`R_{11}`, and :math:`R_{22}`. The matrix is diagonal for uncorelated signals. We assume that the matrix elements are the variance of the random numbers obtained from a normal distribution of mean 0.
 
 Note that the covariance matrix of the measurement noise :math:`R` is diagonal for uncorelated signals. The data format will consist of a :math:`N`-by-3 matrix where the first column will represent the time, and the second and third the data obtained by the signal emulator.
 
@@ -50,15 +51,15 @@ Construction of the model
 
 The state-transition matrix :math:`A` and the state-to-measurement matrix :math:`H` can be defined by the user. For now only constants  are allowed (including the constant timestep size).
 
-We assume that the covariance noise matrix of the state-transition is diagonal (uncorelated system) and that the diagonal matrix elements are random number obtained from a normal distribution of mean 0 and standard deviation of :math:`Q_{11}` and :math:`Q_{22}`.
+We assume that the covariance noise matrix of the state-transition is diagonal (uncorelated system) and that the diagonal matrix elements, :math:`Q_{11}` and :math:`Q_{22}`, the variances of random number obtained from a normal distribution of mean 0.
 
 We also assume that the initial state space vector is known, i.e. :math:`X_0`.
 
 The user inputs for the model are:
 
 1. The initial state-space vector :math:`X_0`.
-1. The four entries of the matrices :math:`A` and :math:`H`.
-2. The diagonal components of the matrix :math:`Q`.
+2. The four entries of the matrices :math:`A` and :math:`H`.
+3. The diagonal components of the matrix :math:`Q`.
 
 
 Saving the results
@@ -70,7 +71,7 @@ The result and user parameters can be saved in the application database for futu
 API
 ---
 
-The zolware package will be cloned from the GitHub repository and installed on the server using setuptools. The Python API will provide a simple gaussianStateSpace class, a stateSpaceModel class, a measurementClass, and a linearKalmanFilter class.
+The zolware package will be cloned from the GitHub repository and installed on the server using setuptools. The Python API will provide simple classes for the application.
 
 
 Proposed Technology
@@ -106,6 +107,20 @@ Future improvments
 - Add a bayesian network visualization tool.
 - Support for varying time-step size.
 - Switch to Amazon EC2?
+
+
+Site Architecture
+-----------------
+
+.. figure:: ../images/mvp_architecture.svg
+    :name: f_architecture
+    :width: 775px
+    :align: center
+    :height: 600px
+    :alt: alternate text
+    :figclass: align-center
+    
+    Schematics of the link between the components (views) of the application.
 
 User Interface
 --------------

@@ -57,6 +57,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#api">API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#proposed-technology">Proposed Technology</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#future-improvments">Future improvments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#site-architecture">Site Architecture</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#user-interface">User Interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#deployment">Deployment</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#testing">Testing</a></li>
@@ -78,6 +79,7 @@
 <li><a class="reference internal" href="#api">API</a></li>
 <li><a class="reference internal" href="#proposed-technology">Proposed Technology</a></li>
 <li><a class="reference internal" href="#future-improvments">Future improvments</a></li>
+<li><a class="reference internal" href="#site-architecture">Site Architecture</a></li>
 <li><a class="reference internal" href="#user-interface">User Interface</a></li>
 <li><a class="reference internal" href="#deployment">Deployment</a></li>
 <li><a class="reference internal" href="#testing">Testing</a></li>
@@ -126,11 +128,12 @@
 <h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
 <p>The proof of concept would be a simple web application with the following components:</p>
 <ul class="simple">
-<li>A home page (user view) with a menu bar</li>
+<li>A home page with saved models</li>
 <li>A sign In/Sign Up interface</li>
-<li>An basic application database (user details, user data, user state-space models, ...)</li>
 <li>A sensor emulator</li>
 <li>A model constructor</li>
+<li>A user view displaying the results of the prediction</li>
+<li>An basic application database (user details, user data, user state-space models, ...)</li>
 <li>An admin interface</li>
 </ul>
 <p>The web application will provide a GUI for the engineer to construct a two-state-spaces model, generate a static data stream composed of two uncorelated time series, and lauch the application to observe the results in the user view. Note that there will be no hiden state and learning algorithm procedures in the MVP. The user view will only display the data (predicted, true and real) where the predicted value will be obtained from a simple linear Kalman filter. Only one solver option would be available, i.e. the LU method.</p>
@@ -143,19 +146,21 @@
 <li>Timestep size <span class="math">\(\Delta t\)</span>.</li>
 <li>Number of measurements <span class="math">\(N\)</span>.</li>
 <li>Sensor labels (one for each signal).</li>
-<li>The standard deviation of the noise for both signals <span class="math">\(R_{11}\)</span>, and <span class="math">\(R_{22}\)</span>. We assume that the noise is a random normal number of mean 0.</li>
+<li>The standard deviation of the covariance noise matrix <span class="math">\(R_{11}\)</span>, and <span class="math">\(R_{22}\)</span>. The matrix is diagonal for uncorelated signals. We assume that the matrix elements are the variance of the random numbers obtained from a normal distribution of mean 0.</li>
 </ol>
 <p>Note that the covariance matrix of the measurement noise <span class="math">\(R\)</span> is diagonal for uncorelated signals. The data format will consist of a <span class="math">\(N\)</span>-by-3 matrix where the first column will represent the time, and the second and third the data obtained by the signal emulator.</p>
 </div>
 <div class="section" id="construction-of-the-model">
 <h2>Construction of the model<a class="headerlink" href="#construction-of-the-model" title="Permalink to this headline">¶</a></h2>
 <p>The state-transition matrix <span class="math">\(A\)</span> and the state-to-measurement matrix <span class="math">\(H\)</span> can be defined by the user. For now only constants  are allowed (including the constant timestep size).</p>
-<p>We assume that the covariance noise matrix of the state-transition is diagonal (uncorelated system) and that the diagonal matrix elements are random number obtained from a normal distribution of mean 0 and standard deviation of <span class="math">\(Q_{11}\)</span> and <span class="math">\(Q_{22}\)</span>.</p>
+<p>We assume that the covariance noise matrix of the state-transition is diagonal (uncorelated system) and that the diagonal matrix elements, <span class="math">\(Q_{11}\)</span> and <span class="math">\(Q_{22}\)</span>, the variances of random number obtained from a normal distribution of mean 0.</p>
 <p>We also assume that the initial state space vector is known, i.e. <span class="math">\(X_0\)</span>.</p>
 <p>The user inputs for the model are:</p>
-<p>1. The initial state-space vector <span class="math">\(X_0\)</span>.
-1. The four entries of the matrices <span class="math">\(A\)</span> and <span class="math">\(H\)</span>.
-2. The diagonal components of the matrix <span class="math">\(Q\)</span>.</p>
+<ol class="arabic simple">
+<li>The initial state-space vector <span class="math">\(X_0\)</span>.</li>
+<li>The four entries of the matrices <span class="math">\(A\)</span> and <span class="math">\(H\)</span>.</li>
+<li>The diagonal components of the matrix <span class="math">\(Q\)</span>.</li>
+</ol>
 </div>
 <div class="section" id="saving-the-results">
 <h2>Saving the results<a class="headerlink" href="#saving-the-results" title="Permalink to this headline">¶</a></h2>
@@ -163,7 +168,7 @@
 </div>
 <div class="section" id="api">
 <h2>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h2>
-<p>The zolware package will be cloned from the GitHub repository and installed on the server using setuptools. The Python API will provide a simple gaussianStateSpace class, a stateSpaceModel class, a measurementClass, and a linearKalmanFilter class.</p>
+<p>The zolware package will be cloned from the GitHub repository and installed on the server using setuptools. The Python API will provide simple classes for the application.</p>
 </div>
 <div class="section" id="proposed-technology">
 <h2>Proposed Technology<a class="headerlink" href="#proposed-technology" title="Permalink to this headline">¶</a></h2>
@@ -200,16 +205,23 @@
 <li>Switch to Amazon EC2?</li>
 </ul>
 </div>
+<div class="section" id="site-architecture">
+<h2>Site Architecture<a class="headerlink" href="#site-architecture" title="Permalink to this headline">¶</a></h2>
+<div class="align-center figure" id="f-architecture">
+<a class="reference internal image-reference" href="_images/mvp_architecture.svg"><img alt="alternate text" height="600px" src="_images/mvp_architecture.svg" width="775px" /></a>
+<p class="caption"><span class="caption-number">Figure 1 </span><span class="caption-text">Schematics of the link between the components (views) of the application.</span></p>
+</div>
+</div>
 <div class="section" id="user-interface">
 <h2>User Interface<a class="headerlink" href="#user-interface" title="Permalink to this headline">¶</a></h2>
 <p>Here are some basic screenshots</p>
 <div class="align-center figure" id="f-signin">
 <a class="reference internal image-reference" href="_images/mvp_signIn.png"><img alt="alternate text" src="_images/mvp_signIn.png" style="width: 775px; height: 600px;" /></a>
-<p class="caption"><span class="caption-number">Figure 1 </span><span class="caption-text">The <code class="docutils literal"><span class="pre">Sign</span> <span class="pre">In</span></code> page is the default page for the first visit on www.ponteligo.com.</span></p>
+<p class="caption"><span class="caption-number">Figure 2 </span><span class="caption-text">The <code class="docutils literal"><span class="pre">Sign</span> <span class="pre">In</span></code> page is the default page for the first visit on www.ponteligo.com.</span></p>
 </div>
 <div class="align-center figure" id="f-signup">
 <a class="reference internal image-reference" href="_images/mvp_signUp.png"><img alt="alternate text" src="_images/mvp_signUp.png" style="width: 775px; height: 600px;" /></a>
-<p class="caption"><span class="caption-number">Figure 2 </span><span class="caption-text">The <code class="docutils literal"><span class="pre">Sign</span> <span class="pre">Up</span></code> page uses email validation to register a new user. A basic Mailgun account include 10,000 free emails every month.</span></p>
+<p class="caption"><span class="caption-number">Figure 3 </span><span class="caption-text">The <code class="docutils literal"><span class="pre">Sign</span> <span class="pre">Up</span></code> page uses email validation to register a new user. A basic Mailgun account include 10,000 free emails every month.</span></p>
 </div>
 </div>
 <div class="section" id="deployment">
