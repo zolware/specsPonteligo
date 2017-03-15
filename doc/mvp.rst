@@ -74,6 +74,12 @@ API
 The zolware package will be cloned from the GitHub repository and installed on the server using setuptools. The Python API will provide simple classes for the application.
 
 
+Localization
+------------
+
+The web application must be in French and in English.
+
+
 Proposed Technology
 -------------------
 
@@ -92,6 +98,7 @@ Proposed Technology
 - Continuous integration: `Travis CI <https://travis-ci.org>`_
 - Code coverage: `codecov <https://codecov.io>`_
 - SSL certificate: `DigiCert <https://www.digicert.com>`_ or another competitor.
+- Embedded Python figures: `Bokeh <http://bokeh.pydata.org/en/latest/>`_
 
 
 Future improvments
@@ -114,9 +121,9 @@ Site Architecture
 
 .. figure:: ../images/mvp_architecture.svg
     :name: f_architecture
-    :width: 775px
+    :width: 600px
     :align: center
-    :height: 600px
+    :height: 450px
     :alt: alternate text
     :figclass: align-center
     
@@ -151,7 +158,7 @@ Here are some basic screenshots
 Deployment
 ----------
 
-Follow best practices presented in [Roy2015]_
+Follow best practices presented in [Roy2015]_. A good template to begin with is `Cookiecutter <https://github.com/pydanny/cookiecutter-django>`_.
 
 
 Testing
