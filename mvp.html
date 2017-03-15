@@ -47,7 +47,7 @@
             <p class="logo"><a href="index.html">
               <img class="logo" src="_static/logo_200.png" alt="Logo"/>
             </a></p>
-<h3><a href="https://www.openproject.org">OpenProject Wiki</a></h3><h3>Navigation</h3>
+<h3><a href="http://pm.zolware.com/projects/pontelligo-product">OpenProject</a></h3><h3>Navigation</h3>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Minimum Viable Product</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#description">Description</a></li>
@@ -55,6 +55,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#construction-of-the-model">Construction of the model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#saving-the-results">Saving the results</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#api">API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#localization">Localization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#proposed-technology">Proposed Technology</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#future-improvments">Future improvments</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#site-architecture">Site Architecture</a></li>
@@ -77,6 +78,7 @@
 <li><a class="reference internal" href="#construction-of-the-model">Construction of the model</a></li>
 <li><a class="reference internal" href="#saving-the-results">Saving the results</a></li>
 <li><a class="reference internal" href="#api">API</a></li>
+<li><a class="reference internal" href="#localization">Localization</a></li>
 <li><a class="reference internal" href="#proposed-technology">Proposed Technology</a></li>
 <li><a class="reference internal" href="#future-improvments">Future improvments</a></li>
 <li><a class="reference internal" href="#site-architecture">Site Architecture</a></li>
@@ -170,6 +172,10 @@
 <h2>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h2>
 <p>The zolware package will be cloned from the GitHub repository and installed on the server using setuptools. The Python API will provide simple classes for the application.</p>
 </div>
+<div class="section" id="localization">
+<h2>Localization<a class="headerlink" href="#localization" title="Permalink to this headline">¶</a></h2>
+<p>The web application must be in French and in English.</p>
+</div>
 <div class="section" id="proposed-technology">
 <h2>Proposed Technology<a class="headerlink" href="#proposed-technology" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
@@ -188,6 +194,7 @@
 <li>Continuous integration: <a class="reference external" href="https://travis-ci.org">Travis CI</a></li>
 <li>Code coverage: <a class="reference external" href="https://codecov.io">codecov</a></li>
 <li>SSL certificate: <a class="reference external" href="https://www.digicert.com">DigiCert</a> or another competitor.</li>
+<li>Embedded Python figures: <a class="reference external" href="http://bokeh.pydata.org/en/latest/">Bokeh</a></li>
 </ul>
 </div>
 <div class="section" id="future-improvments">
@@ -208,7 +215,7 @@
 <div class="section" id="site-architecture">
 <h2>Site Architecture<a class="headerlink" href="#site-architecture" title="Permalink to this headline">¶</a></h2>
 <div class="align-center figure" id="f-architecture">
-<a class="reference internal image-reference" href="_images/mvp_architecture.svg"><img alt="alternate text" height="600px" src="_images/mvp_architecture.svg" width="775px" /></a>
+<a class="reference internal image-reference" href="_images/mvp_architecture.svg"><img alt="alternate text" height="450px" src="_images/mvp_architecture.svg" width="600px" /></a>
 <p class="caption"><span class="caption-number">Figure 1 </span><span class="caption-text">Schematics of the link between the components (views) of the application.</span></p>
 </div>
 </div>
@@ -226,7 +233,7 @@
 </div>
 <div class="section" id="deployment">
 <h2>Deployment<a class="headerlink" href="#deployment" title="Permalink to this headline">¶</a></h2>
-<p>Follow best practices presented in <a class="reference internal" href="#roy2015" id="id1">[Roy2015]</a></p>
+<p>Follow best practices presented in <a class="reference internal" href="#roy2015" id="id1">[Roy2015]</a>. A good template to begin with is <a class="reference external" href="https://github.com/pydanny/cookiecutter-django">Cookiecutter</a>.</p>
 </div>
 <div class="section" id="testing">
 <h2>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h2>
