@@ -17,10 +17,6 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.viewcode',
     'sphinx.ext.todo',
-    #'sphinx.ext.autosectionlabel',
-    #'bokeh.sphinxext.bokeh_plot',
-    #'bokeh.sphinxext.bokeh_autodoc',
-    #'bokeh.sphinxext.sitemap',
 ]
 
 numfig = True
@@ -73,7 +69,7 @@ language = None
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', 'conf.py']
+exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 # The reST default role (used for this markup: `text`) to use for all
 # documents.
@@ -114,7 +110,7 @@ html_theme = 'alabaster'
 # further.  For a list of options available for each theme, see the
 # documentation.
 html_theme_options = {'show_powered_by': False,
-                      'page_width': '1200px',
+                      'page_width': '1000px',
                       'fixed_sidebar': True}
 
 # Add any paths that contain custom themes here, relative to this directory.

@@ -1,9 +1,9 @@
-=======================
-Pnteligo Specifications
-=======================
+=========================
+Pnteligo's Specifications
+=========================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    
    mvp
    general/index
