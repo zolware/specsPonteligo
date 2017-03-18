@@ -31,7 +31,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="General Information" href="general/index.html" />
-    <link rel="prev" title="Pnteligo Specifications" href="index.html" />
+    <link rel="prev" title="Pnteligo’s Specifications" href="index.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -49,22 +49,7 @@
             </a></p>
 <h3><a href="http://pm.zolware.com/projects/pontelligo-product">OpenProject</a></h3><h3>Navigation</h3>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Minimum Viable Product</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#description">Description</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#generation-of-data">Generation of Data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#construction-of-the-model">Construction of the model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#saving-the-results">Saving the results</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#api">API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#localization">Localization</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#proposed-technology">Proposed Technology</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#future-improvments">Future improvments</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#site-architecture">Site Architecture</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#user-interface">User Interface</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#deployment">Deployment</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#testing">Testing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#references">References</a></li>
-</ul>
-</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Minimum Viable Product</a></li>
 <li class="toctree-l1"><a class="reference internal" href="general/index.html">General Information</a></li>
 <li class="toctree-l1"><a class="reference internal" href="support/index.html">Supporting Files</a></li>
 </ul>
@@ -74,17 +59,17 @@
   <ul>
 <li><a class="reference internal" href="#">Minimum Viable Product</a><ul>
 <li><a class="reference internal" href="#description">Description</a></li>
-<li><a class="reference internal" href="#generation-of-data">Generation of Data</a></li>
+<li><a class="reference internal" href="#measurement-interface">Measurement Interface</a></li>
 <li><a class="reference internal" href="#construction-of-the-model">Construction of the model</a></li>
-<li><a class="reference internal" href="#saving-the-results">Saving the results</a></li>
 <li><a class="reference internal" href="#api">API</a></li>
 <li><a class="reference internal" href="#localization">Localization</a></li>
-<li><a class="reference internal" href="#proposed-technology">Proposed Technology</a></li>
-<li><a class="reference internal" href="#future-improvments">Future improvments</a></li>
-<li><a class="reference internal" href="#site-architecture">Site Architecture</a></li>
-<li><a class="reference internal" href="#user-interface">User Interface</a></li>
+<li><a class="reference internal" href="#architecture">Architecture</a></li>
+<li><a class="reference internal" href="#models">Models</a></li>
+<li><a class="reference internal" href="#views">Views</a></li>
+<li><a class="reference internal" href="#forms">Forms</a></li>
 <li><a class="reference internal" href="#deployment">Deployment</a></li>
 <li><a class="reference internal" href="#testing">Testing</a></li>
+<li><a class="reference internal" href="#future-improvments">Future improvments</a></li>
 <li><a class="reference internal" href="#references">References</a></li>
 </ul>
 </li>
@@ -119,7 +104,7 @@
 </tr>
 <tr class="field-even field"><th class="field-name">Date Created:</th><td class="field-body">03-14-2017</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Language:</th><td class="field-body">Python, Java Script</td>
+<tr class="field-odd field"><th class="field-name">Language:</th><td class="field-body">None</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Status:</th><td class="field-body"><span class="red">Draft</span></td>
 </tr>
@@ -130,27 +115,20 @@
 <h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
 <p>The proof of concept would be a simple web application with the following components:</p>
 <ul class="simple">
-<li>A home page with saved models</li>
-<li>A sign In/Sign Up interface</li>
-<li>A sensor emulator</li>
-<li>A model constructor</li>
-<li>A user view displaying the results of the prediction</li>
-<li>An basic application database (user details, user data, user state-space models, ...)</li>
-<li>An admin interface</li>
+<li>A home page containing a list of saved models (database).</li>
+<li>A sign In/Sign Up interface (bfore authentiacation).</li>
+<li>A basic user profile interface.</li>
+<li>An interface to get the signals source.</li>
+<li>A model constructor Interface.</li>
+<li>A user view displaying the results (signal and prediction).</li>
+<li>An basic application database on a postgreSQL server.</li>
+<li>An admin interface.</li>
 </ul>
-<p>The web application will provide a GUI for the engineer to construct a two-state-spaces model, generate a static data stream composed of two uncorelated time series, and lauch the application to observe the results in the user view. Note that there will be no hiden state and learning algorithm procedures in the MVP. The user view will only display the data (predicted, true and real) where the predicted value will be obtained from a simple linear Kalman filter. Only one solver option would be available, i.e. the LU method.</p>
+<p>The web application will provide a GUI for the engineer to construct a two-state-spaces model, get a data stream composed of two uncorelated time series, lauch the application to observe the results in the user view and save the model if desired. Note that there will be no hiden state and learning algorithm procedures in the MVP. The user view will only display the data (predicted, real) where the predicted value will be obtained from a simple linear Kalman filter. Only one solver option would be available, i.e. the LU method.</p>
 </div>
-<div class="section" id="generation-of-data">
-<h2>Generation of Data<a class="headerlink" href="#generation-of-data" title="Permalink to this headline">¶</a></h2>
-<p>The data stream will consist of two &#8220;static&#8221; signals, i.e. offline mode. The application will generate the two uncorelated time series using some user defined inputs at regular timestep size. These inputs are:</p>
-<ol class="arabic simple">
-<li>Data stream name.</li>
-<li>Timestep size <span class="math">\(\Delta t\)</span>.</li>
-<li>Number of measurements <span class="math">\(N\)</span>.</li>
-<li>Sensor labels (one for each signal).</li>
-<li>The standard deviation of the covariance noise matrix <span class="math">\(R_{11}\)</span>, and <span class="math">\(R_{22}\)</span>. The matrix is diagonal for uncorelated signals. We assume that the matrix elements are the variance of the random numbers obtained from a normal distribution of mean 0.</li>
-</ol>
-<p>Note that the covariance matrix of the measurement noise <span class="math">\(R\)</span> is diagonal for uncorelated signals. The data format will consist of a <span class="math">\(N\)</span>-by-3 matrix where the first column will represent the time, and the second and third the data obtained by the signal emulator.</p>
+<div class="section" id="measurement-interface">
+<h2>Measurement Interface<a class="headerlink" href="#measurement-interface" title="Permalink to this headline">¶</a></h2>
+<p>The application will get the two uncorelated time series (uniform time steps) using the zolware data service available at zolware.com.</p>
 </div>
 <div class="section" id="construction-of-the-model">
 <h2>Construction of the model<a class="headerlink" href="#construction-of-the-model" title="Permalink to this headline">¶</a></h2>
@@ -162,45 +140,50 @@
 <li>The initial state-space vector <span class="math">\(X_0\)</span>.</li>
 <li>The four entries of the matrices <span class="math">\(A\)</span> and <span class="math">\(H\)</span>.</li>
 <li>The diagonal components of the matrix <span class="math">\(Q\)</span>.</li>
+<li>The standard deviation of the covariance noise matrix <span class="math">\(R_{11}\)</span>, and <span class="math">\(R_{22}\)</span>. The matrix is diagonal for uncorelated signals. We assume that the matrix elements are the variance of the random numbers obtained from a normal distribution of mean 0.</li>
 </ol>
-</div>
-<div class="section" id="saving-the-results">
-<h2>Saving the results<a class="headerlink" href="#saving-the-results" title="Permalink to this headline">¶</a></h2>
-<p>The result and user parameters can be saved in the application database for future use (django model).</p>
+<p>Note that the covariance matrix of the measurement noise <span class="math">\(R\)</span> is diagonal for uncorelated signals. The data format will consist of a <span class="math">\(N\)</span>-by-3 matrix where the first column will represent the time, and the second and third the data obtained by the signal emulator.</p>
 </div>
 <div class="section" id="api">
 <h2>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h2>
-<p>The zolware package will be cloned from the GitHub repository and installed on the server using setuptools. The Python API will provide simple classes for the application.</p>
+<p>The zolware package will be cloned from the GitHub repository and installed on the ponteligo server using setuptools. The Python API will provide simple classes for the application.</p>
 </div>
 <div class="section" id="localization">
 <h2>Localization<a class="headerlink" href="#localization" title="Permalink to this headline">¶</a></h2>
 <p>The web application must be in French and in English.</p>
 </div>
-<div class="section" id="proposed-technology">
-<h2>Proposed Technology<a class="headerlink" href="#proposed-technology" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li>Coding languages: Python and javascript (user interface)</li>
-<li>Back-end Framework: <a class="reference external" href="https://www.djangoproject.com">Django</a></li>
-<li>Web Servers: <a class="reference external" href="https://nginx.org/en/">Nginx</a></li>
-<li>WSGI Server: <a class="reference external" href="http://gunicorn.org">Gunicorn</a></li>
-<li>Hosting: <a class="reference external" href="https://www.heroku.com">Heroku</a> hobby account ($7/month)</li>
-<li>Storage: <a class="reference external" href="https://aws.amazon.com/s3/">Amazon S3</a></li>
-<li>Templating: <a class="reference external" href="http://jinja.pocoo.org">Jinja2</a></li>
-<li>Front-end Framework: <a class="reference external" href="http://getbootstrap.com">Bootstrap</a></li>
-<li>Email backend: <a class="reference external" href="https://www.mailgun.com">mailgun</a></li>
-<li>Database: <a class="reference external" href="https://www.postgresql.org">postgresql</a></li>
-<li>Unit Testing: <a class="reference external" href="http://doc.pytest.org/en/latest/">pytest</a> and <a class="reference external" href="https://tox.readthedocs.io/en/latest/">tox</a></li>
-<li>Integration testing: <a class="reference external" href="http://www.seleniumhq.org">selenium</a> + <a class="reference external" href="http://phantomjs.org">phantomJS</a></li>
-<li>Continuous integration: <a class="reference external" href="https://travis-ci.org">Travis CI</a></li>
-<li>Code coverage: <a class="reference external" href="https://codecov.io">codecov</a></li>
-<li>SSL certificate: <a class="reference external" href="https://www.digicert.com">DigiCert</a> or another competitor.</li>
-<li>Embedded Python figures: <a class="reference external" href="http://bokeh.pydata.org/en/latest/">Bokeh</a></li>
-</ul>
+<div class="section" id="architecture">
+<h2>Architecture<a class="headerlink" href="#architecture" title="Permalink to this headline">¶</a></h2>
+<p>A good template to begin with is <a class="reference external" href="https://github.com/pydanny/cookiecutter-django">Cookiecutter</a>.</p>
+<div class="admonition-todo admonition" id="index-0">
+<p class="first admonition-title">Todo</p>
+<p class="last">Diagram using graphviz.</p>
+</div>
+</div>
+<div class="section" id="models">
+<h2>Models<a class="headerlink" href="#models" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="views">
+<h2>Views<a class="headerlink" href="#views" title="Permalink to this headline">¶</a></h2>
+<div class="align-center figure" id="f-architecture">
+<a class="reference internal image-reference" href="_images/mvp_architecture.svg"><img alt="alternate text" height="450px" src="_images/mvp_architecture.svg" width="600px" /></a>
+<p class="caption"><span class="caption-number">Figure 1 </span><span class="caption-text">Schematics of the link between the components (views) of the application.</span></p>
+</div>
+</div>
+<div class="section" id="forms">
+<h2>Forms<a class="headerlink" href="#forms" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="deployment">
+<h2>Deployment<a class="headerlink" href="#deployment" title="Permalink to this headline">¶</a></h2>
+<p>Follow best practices presented in <a class="reference internal" href="#roy2015" id="id1">[Roy2015]</a>.</p>
+</div>
+<div class="section" id="testing">
+<h2>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h2>
+<p>Compare with the estimation velocity from position example presented in <a class="reference internal" href="#phil2010" id="id2">[Phil2010]</a></p>
 </div>
 <div class="section" id="future-improvments">
 <h2>Future improvments<a class="headerlink" href="#future-improvments" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>Connection to the data server &#8211; see <a class="reference external" href="https://zolware.github.io/specsZolware/database/index.html">Database Service</a> for direct data access (streaming or static).</li>
 <li>Add more information on the sensors: type, location, units...</li>
 <li>Add unknown parameters (parameters to be learned) to the models.</li>
 <li>Add different learning algorithms, for instance the Maximum Likelihood Estimate (MLE).</li>
@@ -211,33 +194,6 @@
 <li>Support for varying time-step size.</li>
 <li>Switch to Amazon EC2?</li>
 </ul>
-</div>
-<div class="section" id="site-architecture">
-<h2>Site Architecture<a class="headerlink" href="#site-architecture" title="Permalink to this headline">¶</a></h2>
-<div class="align-center figure" id="f-architecture">
-<a class="reference internal image-reference" href="_images/mvp_architecture.svg"><img alt="alternate text" height="450px" src="_images/mvp_architecture.svg" width="600px" /></a>
-<p class="caption"><span class="caption-number">Figure 1 </span><span class="caption-text">Schematics of the link between the components (views) of the application.</span></p>
-</div>
-</div>
-<div class="section" id="user-interface">
-<h2>User Interface<a class="headerlink" href="#user-interface" title="Permalink to this headline">¶</a></h2>
-<p>Here are some basic screenshots</p>
-<div class="align-center figure" id="f-signin">
-<a class="reference internal image-reference" href="_images/mvp_signIn.png"><img alt="alternate text" src="_images/mvp_signIn.png" style="width: 775px; height: 600px;" /></a>
-<p class="caption"><span class="caption-number">Figure 2 </span><span class="caption-text">The <code class="docutils literal"><span class="pre">Sign</span> <span class="pre">In</span></code> page is the default page for the first visit on www.ponteligo.com.</span></p>
-</div>
-<div class="align-center figure" id="f-signup">
-<a class="reference internal image-reference" href="_images/mvp_signUp.png"><img alt="alternate text" src="_images/mvp_signUp.png" style="width: 775px; height: 600px;" /></a>
-<p class="caption"><span class="caption-number">Figure 3 </span><span class="caption-text">The <code class="docutils literal"><span class="pre">Sign</span> <span class="pre">Up</span></code> page uses email validation to register a new user. A basic Mailgun account include 10,000 free emails every month.</span></p>
-</div>
-</div>
-<div class="section" id="deployment">
-<h2>Deployment<a class="headerlink" href="#deployment" title="Permalink to this headline">¶</a></h2>
-<p>Follow best practices presented in <a class="reference internal" href="#roy2015" id="id1">[Roy2015]</a>. A good template to begin with is <a class="reference external" href="https://github.com/pydanny/cookiecutter-django">Cookiecutter</a>.</p>
-</div>
-<div class="section" id="testing">
-<h2>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h2>
-<p>Compare with the estimation velocity from position example presented in <a class="reference internal" href="#phil2010" id="id2">[Phil2010]</a></p>
 </div>
 <div class="section" id="references">
 <h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
