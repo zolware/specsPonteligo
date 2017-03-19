@@ -1,0 +1,117 @@
+// fdp mygraph.txt -Tpng > mygraph.png (replace by svg if needed)
+
+
+digraph G {
+  size ="4,4";
+  subgraph cluster_Menu {
+    labeljust="l";
+    label = "Menu Bar";
+  }
+  subgraph cluster_Home {
+    labeljust="l";
+    label = "Home";
+  }
+  subgraph cluster_Model {
+    labeljust="l";
+    label = "Model";
+  }
+  subgraph cluster_Results {
+    labeljust="l";
+    label = "Results";
+  }
+  subgraph cluster_Edit {
+    labeljust="l";
+    label = "Edit";
+  }
+  subgraph cluster_SignUp {
+    labeljust="l";
+    label = "Sign Up";
+  }
+  subgraph cluster_SignIn {
+    labeljust="l";
+    label = "Sign In";
+  }
+  subgraph cluster_Profile {
+    labeljust="l";
+    label = "Profile";
+  }
+  subgraph cluster_SignOut {
+    labeljust="l";
+    label = "Sign Out";
+  }
+  subgraph cluster_Forgot {
+    labeljust="l";
+    label = "Forgot Password";
+  }
+  cluster_Menu -> cluster_Model [label="",weight=10];
+  cluster_Model -> cluster_Results [label=""];
+  cluster_Results -> cluster_Home [label=""];
+  cluster_Home -> cluster_Edit [label=""];
+  cluster_Menu -> cluster_SignIn [label="",color=red,weight=1];
+  cluster_Menu -> cluster_SignUp [label="",color=red,weight=1];
+  cluster_SignUp -> Email [color=red];
+  cluster_SignIn -> cluster_Forgot [label="",color=red];
+  cluster_Forgot -> Email [color=red];
+  cluster_Menu -> cluster_Profile [label="",color=blue];
+  cluster_Menu -> cluster_SignOut [label="",color=blue];
+  cluster_Edit -> cluster_Results [label=""];
+  cluster_SignOut -> cluster_SignIn [label="",color=blue];
+  }
+/*
+digraph G {
+  //overlap = compress;
+  //sep = "+0.11";
+  subgraph clusterModel {
+    subgraph clusterC {
+    labeljust="l";
+    label = "API (Open source code)";
+    }
+  subgraph clusterD {
+    subgraph clusterF {
+        Django
+      labeljust="l";
+      label = "Gunicorn";
+    }
+    NGINX -> clusterF;
+    clusterF -> NGINX
+    Memcached -> Django;
+    Django -> Memcached;
+    Celery -> Django;
+    Django -> Celery
+    labeljust="l";
+    label = "Web App (Pay-per-usage or membership fees)";
+    }
+  labeljust="l";
+  label = "Zolware";
+  }
+  
+  PyPI -> clusterC [label="pip install",len=1.50];
+  GitHub [label="GitHub public repo"];
+  GitHubPrivate [label="GitHub private repo"];
+  GitHub -> clusterC [label="git clone",len=2.0];
+  GitHubPrivate -> clusterD
+  GitHubPrivate -> clusterE
+  subgraph clusterE {
+    labeljust="l";
+  label = "Ponteligo (Customized Service)";
+  }
+  subgraph clusterH {
+    labeljust="l";
+  label = "Static file server";
+  }
+  subgraph clusterI {
+    labeljust="l";
+  label = "Postgres server";
+  }
+  clusterH -> Django;
+  clusterI -> Django;
+}
+*/
+
+
+
+
+
+
+
+
