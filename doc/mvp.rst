@@ -23,34 +23,36 @@ Description
 The proof of concept would be a simple web application with the following components:
 
 - A home page containing a list of saved models (database).
-- A sign In/Sign Up interface (bfore authentiacation).
+- A sign In/Sign Up interface (before authentication).
 - A basic user profile interface.
-- A method to get the measurements from zolware.com.
+- A method to stream the measurements from zolware.com.
 - An interface to construct the state-space model.
 - A page displaying the results (signal and prediction).
-- An basic application database on a postgreSQL server.
+- An basic application database on a postgreSQL server to save the models.
 - An admin interface.
 
-The web application will provide a GUI for the engineer to construct a state-spaces model by entering the different matrix elements manually. The user will be able to get the data stream from zolware.com, lauch the application, visualize the results, and save/edit the model if desired. 
+The web application will provide a GUI for the user (engineer) to construct state-space models by manually entering matrix elements in a dedicated web form. The user will also be able to get the data stream from zolware.com, lauch/stop the application, visualize the results, and save/edit the model if desired. 
 
 Note that there will be no hiden state and learning algorithm procedures in the MVP. The user view will only display the data (predicted, real) where the predicted value will be obtained from a simple linear Kalman filter.
 
 The web application will be constructed using the Django web framework and will include two following applications:
 
-1. A *users* app for authentication and registration.
-2. A *modData* app to manipulate and visualize the data.
+1. A "users" app for authentication.
+2. A "kalman_model" app to manipulate and visualize the data.
+
+As a proof of concept, the web application will be hosted on Heroku, a popular Platform as a Service (PaaS) in the Python community. The database server and the static file server will eventually be hosted on different server/Content Delivery Network (CDN) in the future.
 
 
 Measurement Interface
 ---------------------
 
-The user will have to create an acount on zolware.com and generate a time series (uniform time steps) using two or three measurements.
+The user will have to create an acount on `zolware.com <https://zolware.com>`_ in order to generate time series (uniform timestep size) that can be used by the web application.
 
 
 Construction of the state-space model
 -------------------------------------
 
-The state-transition matrix :math:`A` and the state-to-measurement matrix :math:`H` can be defined by the user. For now only constants are allowed (including the constant timestep obtained from the simulated measurements).
+The state-transition matrix :math:`\mathbf{A}`, the state-to-measurement matrix :math:`\mathbf{H}`, the covariance matrix of the state-transition noise :math:`\mathbf{Q}`, and the covariance matrix of the measurement noise :math:`\mathbf{R}` will be defined by the user. For now only constants will be allowed (including the constant timestep obtained from the simulated measurements).
 
 We assume that the covariance matrix of the state-transition noise is diagonal (uncorelated system) and that the matrix elements, :math:`Q_{11}` and :math:`Q_{22}`, are the variances of random number obtained from a normal distribution of mean 0. A similarly assumption is made for the covariance matrix of the measurement noise :math:`R`.
 
@@ -67,86 +69,78 @@ The user inputs for the model are:
 API
 ---
 
-The zolware package will be cloned from the GitHub repository and installed on the ponteligo server using setuptools. The Python API will provide simple classes for manipulating the data and producing the results.
+The `zolware package <https://zolware.github.io/specsZolware/api/index.html>`_ will be cloned from the GitHub repository and installed on the Heroku server using setuptools. The Python API will provide simple classes for manipulating the data and producing the results.
 
 
 Localization
 ------------
 
-The web application must be in French and in English.
+The web application will be available in French and in English.
 
 
 Project Directory Structure
 ---------------------------
 
-A good template to begin with is `Cookiecutter <https://github.com/pydanny/cookiecutter-django>`_.
+The Django project layout will be implemented starting from the `Cookiecutter <https://github.com/pydanny/cookiecutter-django>`_ template.
 
 
-The *users* app
+The "users" app
 ---------------
 
-The Django project will use the django-allauth app. 
+The Django project will use `django-allauth <https://github.com/pennersr/django-allauth>`_ for authentication. 
 
 
-The *modData* app
------------------
+The "kalman_model" app
+----------------------
+
+The "kalman_model" app will provide a database for the measurements, matrices and results. The application will also provide forms to enter the database parameters and tools to visualize the data.
 
 Models
 ######
 
-The *User* model is imported from the *users* app.
+The *User* model will be imported from the "users" app. The *Kalman_Model* model will contain the basic information listed in :numref:`table1`. Note that the *ArrayField* and the *JSONField* are specific to postgreSQL but are available in the django.contrib.postgres.fields module.
 
 .. csv-table:: The *KalmanModel* model.
+   :name: table1
    :header: "Field", "Type", "Details"
    :widths: 10, 5, 15
 
     "owner", "CharField", "ForeignKey(User, on_delete=CASCADE)"
     "measurements", "CharField", "ManyToManyField(Measurement)"
-    "initial_states", "FileField", "upload_to=generate_filename, storage=OverwriteStorage()"
-    "a_matrix", "FileField", "upload_to=generate_filename, storage=OverwriteStorage()"
-    "b_matrix", "FileField", "upload_to=generate_filename, storage=OverwriteStorage()"
-    "h_matrix", "FileField", "upload_to=generate_filename, storage=OverwriteStorage()"
-    "r_matrix", "FileField", "upload_to=generate_filename, storage=OverwriteStorage()"
-    "results", "FileField", "upload_to=generate_filename, storage=OverwriteStorage()"
+    "initial_states", "ArrayField(models.IntegerField())", "blank=true"
+    "a_matrix", "ArrayField(ArrayField(models.IntegerField()))", "blank=true"
+    "h_matrix", "ArrayField(ArrayField(models.IntegerField()))", "blank=true"
+    "q_matrix", "ArrayField(ArrayField(models.IntegerField()))", "blank=true"
+    "r_matrix", "ArrayField(ArrayField(models.IntegerField()))", "blank=true"
+    "filename", "JSONField()", ""
 
-The Project model will not be used in the MVP.
+Validators will be defined for the ArrayFileds and JSONField in order to make sure the matrices are invertible and that the JSON file can be generated and overwrited when the measurement is updated. 
 
-.. csv-table:: The *Project* model.
-   :header: "Field", "Type", "Details"
-   :widths: 10, 5, 15
+A *Simulated_Measurement* model will be needed and constructed from the data streamed by zolware.com. The model attributes are presented in :numref:`table2`.
 
-    "company", "CharField", "unique=True"
-    "location", "CharField", "blank=False"
+.. csv-table::  The *Simulated_measurement* model.
+    :name: table2
+    :header: "Field", "Type", "Details"
+    :widths: 10, 5, 15
 
-The Measurement model is constructed from the data streamed by zolware.com
-
-.. csv-table:: The *Measurement* model.
-   :header: "Field", "Type", "Details"
-   :widths: 10, 5, 15
-
-    "name", "CharField", "unique=true"
-    "project", "CharField", "ForeignKey(Project, on_delete=CASCADE)"
-    "isSimulated", "BooleanField", ""
-    "index", "IntegerField", "unique=true"
-    "xname", "CharField", "blank=false"
-    "xunit", "CharField", "blank=true"
-    "yname", "CharField", "blank=false"
-    "yunit", "CharField", "blank=true, validator for unit format"
-    "sensorType", "CharField", "blank=true"
-    "sensorLabel", "CharField", "blank=true"
-    "sensorLocation", "CharField", "blank=true"
-    "pubDate", "DateTimeField", "blank=true"
-    "originator", "CharField", "blank=true"
-    "reference", "CharField", "blank=true"
-    "details", "CharField", "blank=true"
-    "filename", "FileField", "upload_to=generate_filename, storage=OverwriteStorage()"
+     "name", "CharField", "unique=true"
+     "index", "IntegerField", "unique=true"
+     "xname", "CharField", "blank=false"
+     "xunit", "CharField", "blank=true"
+     "yname", "CharField", "blank=false"
+     "yunit", "CharField", "blank=true"
+     "pubDate", "DateTimeField", "blank=true"
+     "originator", "CharField", "blank=true"
+     "filename", "JSONField", ""
 
 .. todo::
-   Define the fields. Index is position of the last measurement (the length) of the series.
+   Give a brief description of the models' attributes.
 
 
 Views
 #####
+
+Figure :numref:`f_views` shows a schematics of the interaction between the web pages of the application. From the figure we can see that a minimum of 10 views will need to be created.
 
 .. figure:: ../images/mvp_views.svg
     :name: f_views
@@ -161,19 +155,45 @@ Views
 Templates
 #########
 
+The base template will be based on the original `Cookiecutter <https://github.com/pydanny/cookiecutter-django>`_ template. Figure :numref:`f_signIn` shows the basic template and the Sign In page, the "home" page for non-authenticated users. 
+
+.. figure:: ../images/mvp_signIn.png
+    :name: f_signIn
+    :width: 600px
+    :align: center
+    :height: 464px
+    :alt: alternate text
+    :figclass: align-center
+    
+    The Sign In page using the Cookiecutter template.
+
 Forms
 #####
+
+The Model Form will contain the elements of figure :numref:`f_form` for a three-states model:
+
+.. figure:: ../images/mvp_form.svg
+    :name: f_form
+    :width: 600px
+    :align: center
+    :height: 450px
+    :alt: alternate text
+    :figclass: align-center
+    
+    Schematics of the model form.
+
+Each elements can be edited excepted for the non-diagonal elements of the matrix :math:`\mathbf{Q}` and :math:`\mathbf{R}`.
 
 Deployment
 ----------
 
-Follow best practices presented in [Roy2015]_. 
+For now just use the Heroku `instructions <https://devcenter.heroku.com/articles/deploying-python>`_. Eventually we will follow the best practices presented in :cite:`Roy2015`.
 
 
 Testing
 -------
 
-TBD
+Should be similar to what is presented in the introductory book of :cite:`Parcival2014`.
 
 .. Future improvments
 .. ------------------
@@ -190,4 +210,5 @@ TBD
 References
 ----------
 
-.. [Roy2015] `Daniel and Audrey Roy, Two Scoops of Django: Best Practices for Django 1.8, third edition. Two scoops press, 2015 <https://www.amazon.com/Two-Scoops-Django-Best-Practices/dp/0981467342>`_
+.. bibliography:: _static/references.bib
+
