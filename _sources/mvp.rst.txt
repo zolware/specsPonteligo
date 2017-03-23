@@ -28,7 +28,7 @@ The proof of concept would be a simple web application with the following compon
 - A method to stream the measurements from zolware.com.
 - An interface to construct the state-space model.
 - A page displaying the results (signal and prediction).
-- An basic application database on a postgreSQL server to save the models.
+- An basic application database on a separate server to save the models.
 - An admin interface.
 
 The web application will provide a GUI for the user (engineer) to construct state-space models by manually entering matrix elements in a dedicated web form. The user will also be able to get the data stream from zolware.com, lauch/stop the application, visualize the results, and save/edit the model if desired. 
@@ -40,7 +40,7 @@ The web application will be constructed using the Django web framework and will 
 1. A "users" app for authentication.
 2. A "kalman_model" app to manipulate and visualize the data.
 
-As a proof of concept, the web application will be hosted on Heroku, a popular Platform as a Service (PaaS) in the Python community. The database server and the static file server will eventually be hosted on different server/Content Delivery Network (CDN) in the future.
+As a proof of concept, the web application will be hosted on Heroku, a popular Platform as a Service (PaaS) provider in the Python community. The database server and the static file server will eventually be hosted on different server/Content Delivery Network (CDN) in the future.
 
 
 Measurement Interface
@@ -48,7 +48,7 @@ Measurement Interface
 
 The user will have to create an acount on `zolware.com <https://zolware.com>`_ in order to generate time series (uniform timestep size) that can be used by the web application.
 
-
+.. _sec_state_space:
 Construction of the state-space model
 -------------------------------------
 
@@ -57,6 +57,8 @@ The state-transition matrix :math:`\mathbf{A}`, the state-to-measurement matrix 
 We assume that the covariance matrix of the state-transition noise is diagonal (uncorelated system) and that the matrix elements, :math:`Q_{11}` and :math:`Q_{22}`, are the variances of random number obtained from a normal distribution of mean 0. A similarly assumption is made for the covariance matrix of the measurement noise :math:`R`.
 
 We also assume that the initial state space vector is known, i.e. :math:`X_0`.
+
+The MVP will allow a maximimum of three states (signals) per model.
 
 The user inputs for the model are:
 
@@ -78,8 +80,8 @@ Localization
 The web application will be available in French and in English.
 
 
-Project Directory Structure
----------------------------
+Project Layout
+--------------
 
 The Django project layout will be implemented starting from the `Cookiecutter <https://github.com/pydanny/cookiecutter-django>`_ template.
 
@@ -93,48 +95,50 @@ The Django project will use `django-allauth <https://github.com/pennersr/django-
 The "kalman_model" app
 ----------------------
 
-The "kalman_model" app will provide a database for the measurements, matrices and results. The application will also provide forms to enter the database parameters and tools to visualize the data.
+The "kalman_model" app will save the user's inputs and provide access to the model database. The application will also provide tools to manipulate (Kalman filter) and visualize the data.
+
+In the future, we plan to add a bayesian network visualization tool as well as an array of different filters and signal analysis tools.
 
 Models
 ######
 
-The *User* model will be imported from the "users" app. The *Kalman_Model* model will contain the basic information listed in :numref:`table1`. Note that the *ArrayField* and the *JSONField* are specific to postgreSQL but are available in the django.contrib.postgres.fields module.
+The *User* model will be imported from the "users" app. The *Kalman_model* model will contain the basic information listed in :numref:`table1`. Note that the *ArrayField* and the *JSONField* are specific to postgreSQL but are available in the django.contrib.postgres.fields module.
 
-.. csv-table:: The *KalmanModel* model.
+.. csv-table:: The *Kalman_model* model.
    :name: table1
    :header: "Field", "Type", "Details"
-   :widths: 10, 5, 15
+   :widths: 5, 5, 5
 
-    "owner", "CharField", "ForeignKey(User, on_delete=CASCADE)"
-    "measurements", "CharField", "ManyToManyField(Measurement)"
-    "initial_states", "ArrayField(models.IntegerField())", "blank=true"
-    "a_matrix", "ArrayField(ArrayField(models.IntegerField()))", "blank=true"
-    "h_matrix", "ArrayField(ArrayField(models.IntegerField()))", "blank=true"
-    "q_matrix", "ArrayField(ArrayField(models.IntegerField()))", "blank=true"
-    "r_matrix", "ArrayField(ArrayField(models.IntegerField()))", "blank=true"
-    "filename", "JSONField()", ""
+    "owner", "CharF", "ForeignKey(User, on_delete=CASCADE)"
+    "measurements", "CharF", "ManyToManyField(Measurement)"
+    "initial_states", "ArrayF(FloatF)", "blank=true"
+    "a_matrix", "ArrayF(ArrayF(FloatF))", "blank=true"
+    "h_matrix", "ArrayF(ArrayF(FloatF)", "blank=true"
+    "q_matrix", "ArrayF(ArrayF(FloatF))", "blank=true"
+    "r_matrix", "ArrayF(ArrayF(FloatF))", "blank=true"
+    "filename", "JSONF()", ""
 
-Validators will be defined for the ArrayFileds and JSONField in order to make sure the matrices are invertible and that the JSON file can be generated and overwrited when the measurement is updated. 
+Validators will be defined for the ArrayFileds and JSONField in order to make sure the matrices are invertible and that the JSON file can be generated and overwrited when the model is updated (edited). 
 
-A *Simulated_Measurement* model will be needed and constructed from the data streamed by zolware.com. The model attributes are presented in :numref:`table2`.
+A *Measurement* model will be needed and constructed from the data streamed by the data source (zolware.com). The model attributes are presented in :numref:`table2`.
 
-.. csv-table::  The *Simulated_measurement* model.
+.. csv-table::  The *Measurement* model.
     :name: table2
     :header: "Field", "Type", "Details"
-    :widths: 10, 5, 15
+    :widths: 5, 5, 5
 
      "name", "CharField", "unique=true"
-     "index", "IntegerField", "unique=true"
-     "xname", "CharField", "blank=false"
-     "xunit", "CharField", "blank=true"
-     "yname", "CharField", "blank=false"
-     "yunit", "CharField", "blank=true"
-     "pubDate", "DateTimeField", "blank=true"
-     "originator", "CharField", "blank=true"
-     "filename", "JSONField", ""
+     "is_sim", "Boolean", ""
+     "index", "IntegerF", "unique=true"
+     "xname", "CharF", "blank=false"
+     "xunit", "CharF", "blank=true"
+     "yname", "CharF", "blank=false"
+     "yunit", "CharF", "blank=true"
+     "pubDate", "DateTimeF", "blank=true"
+     "originator", "CharF", "blank=true"
+     "filename", "JSONF", ""
 
-.. todo::
-   Give a brief description of the models' attributes.
+The is_sim atribute is true if the data ares simualted, and the index attribute correponds to the length of the measurment array.
 
 
 Views
@@ -170,24 +174,12 @@ The base template will be based on the original `Cookiecutter <https://github.co
 Forms
 #####
 
-The Model Form will contain the elements of figure :numref:`f_form` for a three-states model:
-
-.. figure:: ../images/mvp_form.svg
-    :name: f_form
-    :width: 600px
-    :align: center
-    :height: 450px
-    :alt: alternate text
-    :figclass: align-center
-    
-    Schematics of the model form.
-
-Each elements can be edited excepted for the non-diagonal elements of the matrix :math:`\mathbf{Q}` and :math:`\mathbf{R}`.
+The Model Form will contain the elements the user inputs defined in :numref:`sec_state_space`. The size of the matrices will be determined by the number of signals (maximum three for the MVP). Note that the size of the matrices can be ajusted be leaving zeros on the diagonal of the rows and columns to be removed.
 
 Deployment
 ----------
 
-For now just use the Heroku `instructions <https://devcenter.heroku.com/articles/deploying-python>`_. Eventually we will follow the best practices presented in :cite:`Roy2015`.
+Follow the Heroku `instructions <https://devcenter.heroku.com/articles/deploying-python>`_. Eventually we will follow the best practices presented in :cite:`Roy2015`.
 
 
 Testing
@@ -195,17 +187,17 @@ Testing
 
 Should be similar to what is presented in the introductory book of :cite:`Parcival2014`.
 
-.. Future improvments
-.. ------------------
+Future improvments
+------------------
 
-.. - Add unknown parameters (parameters to be learned) to the models.
-.. - Add different learning algorithms, for instance the Maximum Likelihood Estimate (MLE).
-.. - Add different smoothing techniques.
-.. - Add other variation of the Kalman filter (Extended, unscent, switching)
-.. - Add other solving methods, e.g. UD filter, Square-root filter.
-.. - Add a bayesian network visualization tool.
-.. - Support for varying time-step size.
-.. - Switch to Amazon EC2?
+- Add unknown parameters (parameters to be learned) to the models.
+- Add different learning algorithms, for instance the Maximum Likelihood Estimate (MLE).
+- Add different smoothing techniques.
+- Add other variation of the Kalman filter (Extended, unscent, switching)
+- Add other solving methods, e.g. UD filter, Square-root filter.
+- Add a bayesian network visualization tool.
+- Support for varying time-step size.
+- Switch to Amazon EC2?
 
 References
 ----------

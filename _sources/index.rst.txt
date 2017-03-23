@@ -1,6 +1,6 @@
-=========================
-Pnteligo's Specifications
-=========================
+==========================
+Ponteligo's Specifications
+==========================
 
 .. toctree::
    :maxdepth: 1
