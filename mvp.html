@@ -65,7 +65,7 @@
 <li><a class="reference internal" href="#localization">Localization</a></li>
 <li><a class="reference internal" href="#project-layout">Project Layout</a></li>
 <li><a class="reference internal" href="#the-users-app">The &#8220;users&#8221; app</a></li>
-<li><a class="reference internal" href="#the-kalman-model-app">The &#8220;kalman_model&#8221; app</a><ul>
+<li><a class="reference internal" href="#the-numerical-app">The &#8220;numerical&#8221; app</a><ul>
 <li><a class="reference internal" href="#models">Models</a></li>
 <li><a class="reference internal" href="#views">Views</a></li>
 <li><a class="reference internal" href="#templates">Templates</a></li>
@@ -123,32 +123,32 @@
 <li>A home page containing a list of saved models (database).</li>
 <li>A sign In/Sign Up interface (before authentication).</li>
 <li>A basic user profile interface.</li>
-<li>A method to stream the measurements from zolware.com.</li>
+<li>A method to stream the measurements from an external source.</li>
 <li>An interface to construct the state-space model.</li>
 <li>A page displaying the results (signal and prediction).</li>
-<li>An basic application database on a separate server to save the models.</li>
+<li>An basic application database to save the models.</li>
 <li>An admin interface.</li>
 </ul>
-<p>The web application will provide a GUI for the user (engineer) to construct state-space models by manually entering matrix elements in a dedicated web form. The user will also be able to get the data stream from zolware.com, lauch/stop the application, visualize the results, and save/edit the model if desired.</p>
-<p>Note that there will be no hiden state and learning algorithm procedures in the MVP. The user view will only display the data (predicted, real) where the predicted value will be obtained from a simple linear Kalman filter.</p>
-<p>The web application will be constructed using the Django web framework and will include two following applications:</p>
+<p>The web application will provide a GUI for the user (engineer) to construct state-space models by manually entering matrix elements in a dedicated web form. The user will also be able to get the data stream from a remote server (or just upload data), lauch/stop the application, visualize the results, and save/edit the model if desired.</p>
+<p>Note that there will be no hiden state and learning algorithm procedures in the MVP. The user view will only display the data (predicted, real) where the predicted value will be obtained from a simple linear Kalman filter/smoother.</p>
+<p>The web application will be constructed using the <a class="reference external" href="https://www.djangoproject.com">Django</a> web framework and will include two following applications:</p>
 <ol class="arabic simple">
-<li>A &#8220;users&#8221; app for authentication.</li>
-<li>A &#8220;kalman_model&#8221; app to manipulate and visualize the data.</li>
+<li>A &#8220;users&#8221; application for authentication.</li>
+<li>A &#8220;numerical&#8221; application to manipulate and visualize the data.</li>
 </ol>
-<p>As a proof of concept, the web application will be hosted on Heroku, a popular Platform as a Service (PaaS) provider in the Python community. The database server and the static file server will eventually be hosted on different server/Content Delivery Network (CDN) in the future.</p>
+<p>As a proof of concept, the web application will be hosted on <a class="reference external" href="https://www.heroku.com">Heroku</a>, a popular Platform as a Service (PaaS) provider in the Python community. The database server and the static file server will eventually be hosted on different server/Content Delivery Network (CDN) in the future.</p>
 </div>
 <div class="section" id="measurement-interface">
 <h2>Measurement Interface<a class="headerlink" href="#measurement-interface" title="Permalink to this headline">¶</a></h2>
-<p>The user will have to create an acount on <a class="reference external" href="https://zolware.com">zolware.com</a> in order to generate time series (uniform timestep size) that can be used by the web application.</p>
+<p>The user will have to generate time series (uniform timestep size) that can be used by the web application.</p>
 </div>
 <div class="section" id="construction-of-the-state-space-model">
-<h2>Construction of the state-space model<a class="headerlink" href="#construction-of-the-state-space-model" title="Permalink to this headline">¶</a></h2>
+<span id="sec-state-space"></span><h2>Construction of the state-space model<a class="headerlink" href="#construction-of-the-state-space-model" title="Permalink to this headline">¶</a></h2>
 <p>The state-transition matrix <span class="math">\(\mathbf{A}\)</span>, the state-to-measurement matrix <span class="math">\(\mathbf{H}\)</span>, the covariance matrix of the state-transition noise <span class="math">\(\mathbf{Q}\)</span>, and the covariance matrix of the measurement noise <span class="math">\(\mathbf{R}\)</span> will be defined by the user. For now only constants will be allowed (including the constant timestep obtained from the simulated measurements).</p>
-<p>We assume that the covariance matrix of the state-transition noise is diagonal (uncorelated system) and that the matrix elements, <span class="math">\(Q_{11}\)</span> and <span class="math">\(Q_{22}\)</span>, are the variances of random number obtained from a normal distribution of mean 0. A similarly assumption is made for the covariance matrix of the measurement noise <span class="math">\(R\)</span>.</p>
+<p>We assume that the covariance matrix of the state-transition noise is diagonal (uncorelated system) and that the matrix elements, e.g. <span class="math">\(Q_{11}\)</span>, <span class="math">\(Q_{22}\)</span>, <span class="math">\(Q_{33}\)</span>... are the variances of random number obtained from a normal distribution of mean 0. A similarly assumption is made for the covariance matrix of the measurement noise <span class="math">\(R\)</span>.</p>
 <p>We also assume that the initial state space vector is known, i.e. <span class="math">\(X_0\)</span>.</p>
 <p>The MVP will allow a maximimum of three states (signals) per model.</p>
-<p>The user inputs for the model are:</p>
+<p>In summary the user inputs will be:</p>
 <ol class="arabic simple">
 <li>The initial state-space vector <span class="math">\(X_0\)</span>.</li>
 <li>The entries of the matrices <span class="math">\(\mathbf{A}\)</span> and <span class="math">\(\mathbf{H}\)</span>.</li>
@@ -158,7 +158,8 @@
 </div>
 <div class="section" id="api">
 <h2>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h2>
-<p>The <a class="reference external" href="https://zolware.github.io/specsZolware/api/index.html">zolware package</a> will be cloned from the GitHub repository and installed on the Heroku server using setuptools. The Python API will provide simple classes for manipulating the data and producing the results.</p>
+<p>A basic API (based on open source code) will be hosted on a GitHub repository (eventually on PyPI). Our API will also be installed on the Heroku server using setuptools. The Python API will provide simple classes for manipulating the data and producing the results.</p>
+<p>It is planned to use <a class="reference external" href="http://www.numpy.org">Numpy</a> and <a class="reference external" href="https://scipy.org">Scipy</a> as the building blocks for the numerical code. The package <a class="reference external" href="https://pypi.python.org/pypi/filterpy">filterpy</a> can also be used in the MVP (MIT license).</p>
 </div>
 <div class="section" id="localization">
 <h2>Localization<a class="headerlink" href="#localization" title="Permalink to this headline">¶</a></h2>
@@ -172,15 +173,15 @@
 <h2>The &#8220;users&#8221; app<a class="headerlink" href="#the-users-app" title="Permalink to this headline">¶</a></h2>
 <p>The Django project will use <a class="reference external" href="https://github.com/pennersr/django-allauth">django-allauth</a> for authentication.</p>
 </div>
-<div class="section" id="the-kalman-model-app">
-<h2>The &#8220;kalman_model&#8221; app<a class="headerlink" href="#the-kalman-model-app" title="Permalink to this headline">¶</a></h2>
-<p>The &#8220;kalman_model&#8221; app will save the user&#8217;s inputs and provide access to the model database. The application will also provide tools to manipulate (Kalman filter) and visualize the data.</p>
+<div class="section" id="the-numerical-app">
+<h2>The &#8220;numerical&#8221; app<a class="headerlink" href="#the-numerical-app" title="Permalink to this headline">¶</a></h2>
+<p>The &#8220;numerical&#8221; application will save the user&#8217;s inputs and provide access to the model database. The application will also provide tools to manipulate (Kalman filter) and visualize the data.</p>
 <p>In the future, we plan to add a bayesian network visualization tool as well as an array of different filters and signal analysis tools.</p>
 <div class="section" id="models">
 <h3>Models<a class="headerlink" href="#models" title="Permalink to this headline">¶</a></h3>
-<p>The <em>User</em> model will be imported from the &#8220;users&#8221; app. The <em>Kalman_model</em> model will contain the basic information listed in <a class="reference internal" href="#table1"><span class="std std-numref">Table 1</span></a>. Note that the <em>ArrayField</em> and the <em>JSONField</em> are specific to postgreSQL but are available in the django.contrib.postgres.fields module.</p>
+<p>The <em>User</em> model will be imported from the &#8220;users&#8221; app. The <em>Numerical</em> model will contain the basic user inputs listed in <a class="reference internal" href="#table1"><span class="std std-numref">Table 1</span></a>. Note that the <em>ArrayField</em> and the <em>JSONField</em> are specific to postgreSQL but are available in the django.contrib.postgres.fields module.</p>
 <table border="1" class="colwidths-given docutils" id="table1">
-<caption><span class="caption-number">Table 1 </span><span class="caption-text">The <em>Kalman_model</em> model.</span><a class="headerlink" href="#table1" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 1 </span><span class="caption-text">The <em>Numerical</em> model.</span><a class="headerlink" href="#table1" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col width="33%" />
 <col width="33%" />
@@ -194,41 +195,41 @@
 </thead>
 <tbody valign="top">
 <tr class="row-even"><td>owner</td>
-<td>CharF</td>
-<td>ForeignKey(User, on_delete=CASCADE)</td>
+<td>C</td>
+<td>ForeignKey(User)</td>
 </tr>
 <tr class="row-odd"><td>measurements</td>
-<td>CharF</td>
+<td>C</td>
 <td>ManyToManyField(Measurement)</td>
 </tr>
 <tr class="row-even"><td>initial_states</td>
-<td>ArrayF(FloatF)</td>
+<td>AF</td>
 <td>blank=true</td>
 </tr>
 <tr class="row-odd"><td>a_matrix</td>
-<td>ArrayF(ArrayF(FloatF))</td>
+<td>AAF</td>
 <td>blank=true</td>
 </tr>
 <tr class="row-even"><td>h_matrix</td>
-<td>ArrayF(ArrayF(FloatF)</td>
+<td>AAF</td>
 <td>blank=true</td>
 </tr>
 <tr class="row-odd"><td>q_matrix</td>
-<td>ArrayF(ArrayF(FloatF))</td>
+<td>AAF</td>
 <td>blank=true</td>
 </tr>
 <tr class="row-even"><td>r_matrix</td>
-<td>ArrayF(ArrayF(FloatF))</td>
+<td>AAF</td>
 <td>blank=true</td>
 </tr>
 <tr class="row-odd"><td>filename</td>
-<td>JSONF()</td>
+<td>JF</td>
 <td>&#160;</td>
 </tr>
 </tbody>
 </table>
-<p>Validators will be defined for the ArrayFileds and JSONField in order to make sure the matrices are invertible and that the JSON file can be generated and overwrited when the model is updated (edited).</p>
-<p>A <em>Measurement</em> model will be needed and constructed from the data streamed by the data source (zolware.com). The model attributes are presented in <a class="reference internal" href="#table2"><span class="std std-numref">Table 2</span></a>.</p>
+<p>where &#8220;C&#8221;  is for <em>CharField</em>, &#8220;AF&#8221; for <em>ArrayField(FloatField)</em>, &#8220;AAF&#8221; for <em>ArrayField(ArrayField(FloatField))</em>, and &#8220;JF&#8221; is for <em>JSONField</em>. Validators will be defined for the ArrayFields and JSONField in order to make sure the matrices are invertible and that the JSON file can be generated and overwrited when the model is updated (edited).</p>
+<p>A <em>Measurement</em> model will be needed and constructed from the data streamed by the data source. The model attributes are presented in <a class="reference internal" href="#table2"><span class="std std-numref">Table 2</span></a>.</p>
 <table border="1" class="colwidths-given docutils" id="table2">
 <caption><span class="caption-number">Table 2 </span><span class="caption-text">The <em>Measurement</em> model.</span><a class="headerlink" href="#table2" title="Permalink to this table">¶</a></caption>
 <colgroup>
@@ -244,48 +245,48 @@
 </thead>
 <tbody valign="top">
 <tr class="row-even"><td>name</td>
-<td>CharField</td>
+<td>C</td>
 <td>unique=true</td>
 </tr>
 <tr class="row-odd"><td>is_sim</td>
-<td>Boolean</td>
+<td>B</td>
 <td>&#160;</td>
 </tr>
 <tr class="row-even"><td>index</td>
-<td>IntegerF</td>
+<td>I</td>
 <td>unique=true</td>
 </tr>
 <tr class="row-odd"><td>xname</td>
-<td>CharF</td>
+<td>C</td>
 <td>blank=false</td>
 </tr>
 <tr class="row-even"><td>xunit</td>
-<td>CharF</td>
+<td>C</td>
 <td>blank=true</td>
 </tr>
 <tr class="row-odd"><td>yname</td>
-<td>CharF</td>
+<td>C</td>
 <td>blank=false</td>
 </tr>
 <tr class="row-even"><td>yunit</td>
-<td>CharF</td>
+<td>C</td>
 <td>blank=true</td>
 </tr>
 <tr class="row-odd"><td>pubDate</td>
-<td>DateTimeF</td>
+<td>DT</td>
 <td>blank=true</td>
 </tr>
 <tr class="row-even"><td>originator</td>
-<td>CharF</td>
+<td>C</td>
 <td>blank=true</td>
 </tr>
 <tr class="row-odd"><td>filename</td>
-<td>JSONF</td>
+<td>JF</td>
 <td>&#160;</td>
 </tr>
 </tbody>
 </table>
-<p>The is_sim atribute is true if the data ares simualted, and the index attribute correponds to the length of the measurment array.</p>
+<p>where &#8220;B&#8221; is for <em>BooleanField</em>, &#8220;I&#8221; is for <em>IntegerField</em>, and &#8220;DT&#8221; is for <em>DateTimeField</em>. The <em>is_sim</em> atribute is true if the data are simulated, and the index attribute correponds to the length of the measurment array.</p>
 </div>
 <div class="section" id="views">
 <h3>Views<a class="headerlink" href="#views" title="Permalink to this headline">¶</a></h3>
@@ -299,13 +300,13 @@
 <h3>Templates<a class="headerlink" href="#templates" title="Permalink to this headline">¶</a></h3>
 <p>The base template will be based on the original <a class="reference external" href="https://github.com/pydanny/cookiecutter-django">Cookiecutter</a> template. Figure <a class="reference internal" href="#f-signin"><span class="std std-numref">Figure 2</span></a> shows the basic template and the Sign In page, the &#8220;home&#8221; page for non-authenticated users.</p>
 <div class="align-center figure" id="f-signin">
-<a class="reference internal image-reference" href="_images/mvp_signIn.png"><img alt="alternate text" src="_images/mvp_signIn.png" style="width: 600px; height: 464px;" /></a>
+<a class="reference internal image-reference" href="_images/mvp_signIn.png"><img alt="alternate text" src="_images/mvp_signIn.png" style="width: 600px;" /></a>
 <p class="caption"><span class="caption-number">Figure 2 </span><span class="caption-text">The Sign In page using the Cookiecutter template.</span></p>
 </div>
 </div>
 <div class="section" id="forms">
 <h3>Forms<a class="headerlink" href="#forms" title="Permalink to this headline">¶</a></h3>
-<p>The Model Form will contain the elements the user inputs defined in <code class="xref std std-numref docutils literal"><span class="pre">sec_state_space</span></code>. The size of the matrices will be determined by the number of signals (maximum three for the MVP). Note that the size of the matrices can be ajusted be leaving zeros on the diagonal of the rows and columns to be removed.</p>
+<p>The Model Form will contain the elements the user inputs defined in <a class="reference internal" href="#sec-state-space"><span class="std std-ref">Construction of the state-space model</span></a>. The size of the matrices will be determined by the number of signals (maximum three for the MVP). Note that the size of the matrices can be ajusted be leaving zeros on the diagonal of the rows and columns to be removed. The package <a class="reference external" href="http://django-angular.awesto.com/form_validation/">django-angular</a>  seems to be an easy option for the MVP.</p>
 </div>
 </div>
 <div class="section" id="deployment">
@@ -314,7 +315,7 @@
 </div>
 <div class="section" id="testing">
 <h2>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h2>
-<p>Should be similar to what is presented in the introductory book of <a class="reference internal" href="#parcival2014" id="id3">[Per14]</a>.</p>
+<p>Should be inspired from the best practivces presented in the introductory book of <a class="reference internal" href="#parcival2014" id="id3">[Per14]</a>.</p>
 </div>
 <div class="section" id="future-improvments">
 <h2>Future improvments<a class="headerlink" href="#future-improvments" title="Permalink to this headline">¶</a></h2>
@@ -326,7 +327,7 @@
 <li>Add other solving methods, e.g. UD filter, Square-root filter.</li>
 <li>Add a bayesian network visualization tool.</li>
 <li>Support for varying time-step size.</li>
-<li>Switch to Amazon EC2?</li>
+<li>Switch to Amazon EC2.</li>
 </ul>
 </div>
 <div class="section" id="references">
