@@ -98,14 +98,14 @@ The Django project will use `django-allauth <https://github.com/pennersr/django-
 The "numerical" app
 ----------------------
 
-The "numerical" application will save the user's inputs and provide access to the model database. The application will also provide tools to manipulate (Kalman filter) and visualize the data.
+The "numerical" application will save the user's inputs and provide access to the model database. The application will also provide tools to manipulate and visualize data.
 
 In the future, we plan to add a bayesian network visualization tool as well as an array of different filters and signal analysis tools.
 
 Models
 ######
 
-The *User* model will be imported from the "users" app. The *Numerical* model will contain the basic user inputs listed in :numref:`table1`. Note that the *ArrayField* and the *JSONField* are specific to postgreSQL but are available in the django.contrib.postgres.fields module.
+The *User* model will be imported from the "users" app. The *Numerical* model will contain the basic user inputs listed in :numref:`table1`. Note that the *ArrayField* and the *JSONField* are specific to postgreSQL but are available in the *django.contrib.postgres.fields* module.
 
 .. csv-table:: The *Numerical* model.
    :name: table1
@@ -162,7 +162,7 @@ Figure :numref:`f_views` shows a schematics of the interaction between the web p
 Templates
 #########
 
-The base template will be based on the original `Cookiecutter <https://github.com/pydanny/cookiecutter-django>`_ template. Figure :numref:`f_signIn` shows the basic template and the Sign In page, the "home" page for non-authenticated users. 
+The base template will be based on the front-end framework `Twitter Bootstrap v4.0.0 - alpha 4  <http://v4-alpha.getbootstrap.com>`_. Figure :numref:`f_signIn` shows a basic Sign In page example, the "home" page for non-authenticated users, for the MVP. 
 
 .. figure:: ../images/mvp_signIn.png
     :name: f_signIn
@@ -176,7 +176,7 @@ The base template will be based on the original `Cookiecutter <https://github.co
 Forms
 #####
 
-The Model Form will contain the elements the user inputs defined in :ref:`sec_state_space`. The size of the matrices will be determined by the number of signals (maximum three for the MVP). Note that the size of the matrices can be ajusted be leaving zeros on the diagonal of the rows and columns to be removed. The package `django-angular <http://django-angular.awesto.com/form_validation/>`_  seems to be an easy option for the MVP.
+The Model Form will contain the user inputs defined in :ref:`sec_state_space`. The initial size of the matrices (square) will be determined by the number of signals (maximum three for the MVP). Note that the size can be ajusted be leaving zeros on the diagonal of the rows and columns to be removed. The package `django-crispy-forms <http://django-crispy-forms.readthedocs.io/en/latest/index.html>`_ seems to be an easy option for the MVP.
 
 Deployment
 ----------
