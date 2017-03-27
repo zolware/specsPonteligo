@@ -175,11 +175,11 @@
 </div>
 <div class="section" id="the-numerical-app">
 <h2>The &#8220;numerical&#8221; app<a class="headerlink" href="#the-numerical-app" title="Permalink to this headline">¶</a></h2>
-<p>The &#8220;numerical&#8221; application will save the user&#8217;s inputs and provide access to the model database. The application will also provide tools to manipulate (Kalman filter) and visualize the data.</p>
+<p>The &#8220;numerical&#8221; application will save the user&#8217;s inputs and provide access to the model database. The application will also provide tools to manipulate and visualize data.</p>
 <p>In the future, we plan to add a bayesian network visualization tool as well as an array of different filters and signal analysis tools.</p>
 <div class="section" id="models">
 <h3>Models<a class="headerlink" href="#models" title="Permalink to this headline">¶</a></h3>
-<p>The <em>User</em> model will be imported from the &#8220;users&#8221; app. The <em>Numerical</em> model will contain the basic user inputs listed in <a class="reference internal" href="#table1"><span class="std std-numref">Table 1</span></a>. Note that the <em>ArrayField</em> and the <em>JSONField</em> are specific to postgreSQL but are available in the django.contrib.postgres.fields module.</p>
+<p>The <em>User</em> model will be imported from the &#8220;users&#8221; app. The <em>Numerical</em> model will contain the basic user inputs listed in <a class="reference internal" href="#table1"><span class="std std-numref">Table 1</span></a>. Note that the <em>ArrayField</em> and the <em>JSONField</em> are specific to postgreSQL but are available in the <em>django.contrib.postgres.fields</em> module.</p>
 <table border="1" class="colwidths-given docutils" id="table1">
 <caption><span class="caption-number">Table 1 </span><span class="caption-text">The <em>Numerical</em> model.</span><a class="headerlink" href="#table1" title="Permalink to this table">¶</a></caption>
 <colgroup>
@@ -298,7 +298,7 @@
 </div>
 <div class="section" id="templates">
 <h3>Templates<a class="headerlink" href="#templates" title="Permalink to this headline">¶</a></h3>
-<p>The base template will be based on the original <a class="reference external" href="https://github.com/pydanny/cookiecutter-django">Cookiecutter</a> template. Figure <a class="reference internal" href="#f-signin"><span class="std std-numref">Figure 2</span></a> shows the basic template and the Sign In page, the &#8220;home&#8221; page for non-authenticated users.</p>
+<p>The base template will be based on the front-end framework <a class="reference external" href="http://v4-alpha.getbootstrap.com">Twitter Bootstrap v4.0.0 - alpha 4</a>. Figure <a class="reference internal" href="#f-signin"><span class="std std-numref">Figure 2</span></a> shows a basic Sign In page example, the &#8220;home&#8221; page for non-authenticated users, for the MVP.</p>
 <div class="align-center figure" id="f-signin">
 <a class="reference internal image-reference" href="_images/mvp_signIn.png"><img alt="alternate text" src="_images/mvp_signIn.png" style="width: 600px;" /></a>
 <p class="caption"><span class="caption-number">Figure 2 </span><span class="caption-text">The Sign In page using the Cookiecutter template.</span></p>
@@ -306,16 +306,16 @@
 </div>
 <div class="section" id="forms">
 <h3>Forms<a class="headerlink" href="#forms" title="Permalink to this headline">¶</a></h3>
-<p>The Model Form will contain the elements the user inputs defined in <a class="reference internal" href="#sec-state-space"><span class="std std-ref">Construction of the state-space model</span></a>. The size of the matrices will be determined by the number of signals (maximum three for the MVP). Note that the size of the matrices can be ajusted be leaving zeros on the diagonal of the rows and columns to be removed. The package <a class="reference external" href="http://django-angular.awesto.com/form_validation/">django-angular</a>  seems to be an easy option for the MVP.</p>
+<p>The Model Form will contain the user inputs defined in <a class="reference internal" href="#sec-state-space"><span class="std std-ref">Construction of the state-space model</span></a>. The initial size of the matrices (square) will be determined by the number of signals (maximum three for the MVP). Note that the size can be ajusted be leaving zeros on the diagonal of the rows and columns to be removed. The package <a class="reference external" href="http://django-crispy-forms.readthedocs.io/en/latest/index.html">django-crispy-forms</a> seems to be an easy option for the MVP.</p>
 </div>
 </div>
 <div class="section" id="deployment">
 <h2>Deployment<a class="headerlink" href="#deployment" title="Permalink to this headline">¶</a></h2>
-<p>Follow the Heroku <a class="reference external" href="https://devcenter.heroku.com/articles/deploying-python">instructions</a>. Eventually we will follow the best practices presented in <a class="reference internal" href="#roy2015" id="id2">[GG15]</a>.</p>
+<p>Follow the Heroku <a class="reference external" href="https://devcenter.heroku.com/articles/deploying-python">instructions</a>. Eventually we will follow the best practices presented in <a class="reference internal" href="#roy2015" id="id1">[GG15]</a>.</p>
 </div>
 <div class="section" id="testing">
 <h2>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h2>
-<p>Should be inspired from the best practivces presented in the introductory book of <a class="reference internal" href="#parcival2014" id="id3">[Per14]</a>.</p>
+<p>Should be inspired from the best practivces presented in the introductory book of <a class="reference internal" href="#parcival2014" id="id2">[Per14]</a>.</p>
 </div>
 <div class="section" id="future-improvments">
 <h2>Future improvments<a class="headerlink" href="#future-improvments" title="Permalink to this headline">¶</a></h2>
@@ -335,13 +335,13 @@
 <p id="bibtex-bibliography-mvp-0"><table class="docutils citation" frame="void" id="roy2015" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id2">[GG15]</a></td><td>Daniel&nbsp;Roy Greenfield and Audrey&nbsp;Roy Greenfield. <em>Two Scoops of Django, Best Practices for Django 1.8</em>. Two Scoops Press, 3rd edition, 2015.</td></tr>
+<tr><td class="label"><a class="fn-backref" href="#id1">[GG15]</a></td><td>Daniel&nbsp;Roy Greenfield and Audrey&nbsp;Roy Greenfield. <em>Two Scoops of Django, Best Practices for Django 1.8</em>. Two Scoops Press, 3rd edition, 2015.</td></tr>
 </tbody>
 </table>
 <table class="docutils citation" frame="void" id="parcival2014" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id3">[Per14]</a></td><td>Harry J.&nbsp;W. Percival. <em>Test-Driven Development with Python</em>. O&#8217;Reilly, edition, 2014.</td></tr>
+<tr><td class="label"><a class="fn-backref" href="#id2">[Per14]</a></td><td>Harry J.&nbsp;W. Percival. <em>Test-Driven Development with Python</em>. O&#8217;Reilly, edition, 2014.</td></tr>
 </tbody>
 </table>
 </p>
