@@ -98,9 +98,9 @@ The django framework is based on a "MTV" approach – that is, "model", "templat
 
 For the MVP we consider two applications (*users*, *numerical*) with three basic models:
 
-1- The *User* model, to store users details (username, passwords, etc).
-2- The *Numerical* model to link the *User* model to the document database (e.g. `MongoDB <https://docs.mongodb.com>`_), and to store the Bayesian model parameters.
-3- The *Sensor* model to link the *Numerical* model to the document database, and to store the sensors parameters  
+1. The *User* model, to store users details (username, passwords, etc).
+2. The *Numerical* model to link the *User* model to the document database (e.g. `MongoDB <https://docs.mongodb.com>`_), and to store the Bayesian model parameters.
+3. The *Sensor* model to link the *Numerical* model to the document database, and to store the sensors parameters  
 
 The *User* model will be placed in the *user* application. The *Numerical* and *Sensor* models will be placed in the *numerical* application. Note that using the postgresql ORM it is possible to avoid the use of external tools such as MongoDB to store documents (e.g. JSON files). As a matter of fact, the postgresql ORM provide the *ArrayField* and the *JSONField* which are very convenient to store matrices and configuration files. These fields are available in the *django.contrib.postgres.fields* module.
 
