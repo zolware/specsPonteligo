@@ -59,14 +59,15 @@
   <ul>
 <li><a class="reference internal" href="#">Minimum Viable Product</a><ul>
 <li><a class="reference internal" href="#description">Description</a></li>
-<li><a class="reference internal" href="#measurement-interface">Measurement Interface</a></li>
-<li><a class="reference internal" href="#construction-of-the-state-space-model">Construction of the state-space model</a></li>
+<li><a class="reference internal" href="#sensors-interface">Sensors Interface</a></li>
+<li><a class="reference internal" href="#construction-of-the-bayesian-model">Construction of the Bayesian model</a></li>
 <li><a class="reference internal" href="#api">API</a></li>
 <li><a class="reference internal" href="#localization">Localization</a></li>
 <li><a class="reference internal" href="#project-layout">Project Layout</a></li>
-<li><a class="reference internal" href="#the-users-app">The &#8220;users&#8221; app</a></li>
+<li><a class="reference internal" href="#the-django-framework">The Django framework</a></li>
+<li><a class="reference internal" href="#the-users-application">The &#8220;users&#8221; application</a></li>
 <li><a class="reference internal" href="#the-numerical-app">The &#8220;numerical&#8221; app</a><ul>
-<li><a class="reference internal" href="#models">Models</a></li>
+<li><a class="reference internal" href="#models-database-tables">Models (Database Tables)</a></li>
 <li><a class="reference internal" href="#views">Views</a></li>
 <li><a class="reference internal" href="#templates">Templates</a></li>
 <li><a class="reference internal" href="#forms">Forms</a></li>
@@ -123,43 +124,48 @@
 <li>A home page containing a list of saved models (database).</li>
 <li>A sign In/Sign Up interface (before authentication).</li>
 <li>A basic user profile interface.</li>
-<li>A method to stream the measurements from an external source.</li>
-<li>An interface to construct the state-space model.</li>
+<li>A method to stream the sensors&#8217; measurements from an external source.</li>
+<li>An interface to construct the Bayesian model.</li>
 <li>A page displaying the results (signal and prediction).</li>
 <li>An basic application database to save the models.</li>
 <li>An admin interface.</li>
 </ul>
 <p>The web application will provide a GUI for the user (engineer) to construct state-space models by manually entering matrix elements in a dedicated web form. The user will also be able to get the data stream from a remote server (or just upload data), lauch/stop the application, visualize the results, and save/edit the model if desired.</p>
-<p>Note that there will be no hiden state and learning algorithm procedures in the MVP. The user view will only display the data (predicted, real) where the predicted value will be obtained from a simple linear Kalman filter/smoother.</p>
-<p>The web application will be constructed using the <a class="reference external" href="https://www.djangoproject.com">Django</a> web framework and will include two following applications:</p>
+<p>Note that there will be no learning algorithm procedures in the MVP. The user view will only display the data (predicted, real) where the predicted value will be obtained from a simple linear Kalman filter/smoother.</p>
+<p>The web application will be constructed using the <a class="reference external" href="https://www.djangoproject.com">Django</a> web framework and will include the two following applications:</p>
 <ol class="arabic simple">
 <li>A &#8220;users&#8221; application for authentication.</li>
 <li>A &#8220;numerical&#8221; application to manipulate and visualize the data.</li>
 </ol>
-<p>As a proof of concept, the web application will be hosted on <a class="reference external" href="https://www.heroku.com">Heroku</a>, a popular Platform as a Service (PaaS) provider in the Python community. The database server and the static file server will eventually be hosted on different server/Content Delivery Network (CDN) in the future.</p>
+<p>As a proof of concept, the web application will be hosted on <a class="reference external" href="https://www.heroku.com">Heroku</a>, a popular Platform as a Service (PaaS) provider in the Python community. The database server and the static file server will be hosted on different servers. The static file server will be hosted on <a class="reference external" href="https://aws.amazon.com/s3/?nc2=h_m1">Amazon S3</a>.</p>
 </div>
-<div class="section" id="measurement-interface">
-<h2>Measurement Interface<a class="headerlink" href="#measurement-interface" title="Permalink to this headline">¶</a></h2>
-<p>The user will have to generate time series (uniform timestep size) that can be used by the web application.</p>
+<div class="section" id="sensors-interface">
+<h2>Sensors Interface<a class="headerlink" href="#sensors-interface" title="Permalink to this headline">¶</a></h2>
+<p>The user will have to generate time series (uniform timestep size) that can be used by the web application to simulate signals from sensors.</p>
 </div>
-<div class="section" id="construction-of-the-state-space-model">
-<span id="sec-state-space"></span><h2>Construction of the state-space model<a class="headerlink" href="#construction-of-the-state-space-model" title="Permalink to this headline">¶</a></h2>
-<p>The state-transition matrix <span class="math">\(\mathbf{A}\)</span>, the state-to-measurement matrix <span class="math">\(\mathbf{H}\)</span>, the covariance matrix of the state-transition noise <span class="math">\(\mathbf{Q}\)</span>, and the covariance matrix of the measurement noise <span class="math">\(\mathbf{R}\)</span> will be defined by the user. For now only constants will be allowed (including the constant timestep obtained from the simulated measurements).</p>
-<p>We assume that the covariance matrix of the state-transition noise is diagonal (uncorelated system) and that the matrix elements, e.g. <span class="math">\(Q_{11}\)</span>, <span class="math">\(Q_{22}\)</span>, <span class="math">\(Q_{33}\)</span>... are the variances of random number obtained from a normal distribution of mean 0. A similarly assumption is made for the covariance matrix of the measurement noise <span class="math">\(R\)</span>.</p>
-<p>We also assume that the initial state space vector is known, i.e. <span class="math">\(X_0\)</span>.</p>
-<p>The MVP will allow a maximimum of three states (signals) per model.</p>
-<p>In summary the user inputs will be:</p>
-<ol class="arabic simple">
-<li>The initial state-space vector <span class="math">\(X_0\)</span>.</li>
-<li>The entries of the matrices <span class="math">\(\mathbf{A}\)</span> and <span class="math">\(\mathbf{H}\)</span>.</li>
-<li>The diagonal components of the matrix <span class="math">\(\mathbf{Q}\)</span>.</li>
-<li>The diagonal components of the matrix <span class="math">\(\mathbf{R}\)</span>.</li>
-</ol>
+<div class="section" id="construction-of-the-bayesian-model">
+<span id="sec-state-space"></span><h2>Construction of the Bayesian model<a class="headerlink" href="#construction-of-the-bayesian-model" title="Permalink to this headline">¶</a></h2>
+<p>In order to construct the Bayesian model, multiple inputs must be provided by the user. Here is the exhaustive list of user inputs:</p>
+<ul class="simple">
+<li><span class="math">\(N_x\)</span>: The number of <em>state variables</em></li>
+<li><span class="math">\(N_z\)</span>: The number of <em>sensor signals</em></li>
+<li><span class="math">\(N_u\)</span>: The number of <em>control inputs</em></li>
+<li><span class="math">\(\mathbf{x}_0\)</span>: The initial <em>state vector</em>, a <span class="math">\(N_x\times 1\)</span> vector.</li>
+<li><span class="math">\(\mathbf{P}_0\)</span>: The initial <em>state covariance matrix</em>, a <span class="math">\(N_x\times N_x\)</span> matrix.</li>
+<li><span class="math">\(\mathbf{z}\)</span>: The <em>measurement vector</em> (sensors&#8217; signals at time <span class="math">\(t\)</span>), a <span class="math">\(N_z\times 1\)</span> vector.</li>
+<li><span class="math">\(\mathbf{R}\)</span>: The <em>measurement noise covariance matrix</em>, a <span class="math">\(N_z\times N_z\)</span> matrix.</li>
+<li><span class="math">\(\mathbf{u}\)</span>: The <em>control input vector</em> (input signals at time <span class="math">\(t\)</span>), a <span class="math">\(N_u\times 1\)</span> vector.</li>
+<li><span class="math">\(\mathbf{B}\)</span>: The <em>control function matrix</em>, a <span class="math">\(N_x\times N_u\)</span> matrix.</li>
+<li><span class="math">\(\mathbf{F}\)</span>: The <em>transition function matrix</em>, a <span class="math">\(N_x\times N_x\)</span> matrix.</li>
+<li><span class="math">\(\mathbf{Q}\)</span>: The <em>process noise covariance matrix</em>, a <span class="math">\(N_x\times N_x\)</span> matrix.</li>
+<li><span class="math">\(\mathbf{H}\)</span>: The <em>measurement noise covariance matrix</em>, a <span class="math">\(N_z\times N_x\)</span> matrix.</li>
+</ul>
+<p>Note that the size of a matrix is defined by <span class="math">\(\#rows\times \#columns\)</span>.</p>
 </div>
 <div class="section" id="api">
 <h2>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h2>
-<p>A basic API (based on open source code) will be hosted on a GitHub repository (eventually on PyPI). Our API will also be installed on the Heroku server using setuptools. The Python API will provide simple classes for manipulating the data and producing the results.</p>
-<p>It is planned to use <a class="reference external" href="http://www.numpy.org">Numpy</a> and <a class="reference external" href="https://scipy.org">Scipy</a> as the building blocks for the numerical code. The package <a class="reference external" href="https://pypi.python.org/pypi/filterpy">filterpy</a> can also be used in the MVP (MIT license).</p>
+<p>A basic API (based on open source code) will be hosted on a <a class="reference external" href="https://github.com/zolware/zolware_API">GitHub repository</a> (eventually on PyPI). Our API will also be installed on the Heroku server using setuptools. The Python API will provide simple classes for manipulating the data and producing the results.</p>
+<p>It is planned to use <a class="reference external" href="http://www.numpy.org">Numpy</a> and <a class="reference external" href="https://scipy.org">Scipy</a> as the building blocks for the numerical code. The package <a class="reference external" href="https://pypi.python.org/pypi/filterpy">filterpy</a> can also be used for the MVP (MIT license).</p>
 </div>
 <div class="section" id="localization">
 <h2>Localization<a class="headerlink" href="#localization" title="Permalink to this headline">¶</a></h2>
@@ -169,69 +175,29 @@
 <h2>Project Layout<a class="headerlink" href="#project-layout" title="Permalink to this headline">¶</a></h2>
 <p>The Django project layout will be implemented starting from the <a class="reference external" href="https://github.com/pydanny/cookiecutter-django">Cookiecutter</a> template.</p>
 </div>
-<div class="section" id="the-users-app">
-<h2>The &#8220;users&#8221; app<a class="headerlink" href="#the-users-app" title="Permalink to this headline">¶</a></h2>
-<p>The Django project will use <a class="reference external" href="https://github.com/pennersr/django-allauth">django-allauth</a> for authentication.</p>
+<div class="section" id="the-django-framework">
+<h2>The Django framework<a class="headerlink" href="#the-django-framework" title="Permalink to this headline">¶</a></h2>
+<p>The django framework is based on a &#8220;MTV&#8221; approach – that is, &#8220;model&#8221;, &#8220;template&#8221;, and &#8220;view&#8221;. Here the word <em>model</em> refers to database tables. In other words, the Django framework uses Oject Relational Mapping (ORM) to store data.</p>
+<p>For the MVP we consider two applications (<em>users</em>, <em>numerical</em>) with three basic models:</p>
+<p>1- The <em>User</em> model, to store users details (username, passwords, etc).
+2- The <em>Numerical</em> model to link the <em>User</em> model to the document database (e.g. <a class="reference external" href="https://docs.mongodb.com">MongoDB</a>), and to store the Bayesian model parameters.
+3- The <em>Sensor</em> model to link the <em>Numerical</em> model to the document database, and to store the sensors parameters</p>
+<p>The <em>User</em> model will be placed in the <em>user</em> application. The <em>Numerical</em> and <em>Sensor</em> models will be placed in the <em>numerical</em> application. Note that using the postgresql ORM it is possible to avoid the use of external tools such as MongoDB to store documents (e.g. JSON files). As a matter of fact, the postgresql ORM provide the <em>ArrayField</em> and the <em>JSONField</em> which are very convenient to store matrices and configuration files. These fields are available in the <em>django.contrib.postgres.fields</em> module.</p>
+</div>
+<div class="section" id="the-users-application">
+<h2>The &#8220;users&#8221; application<a class="headerlink" href="#the-users-application" title="Permalink to this headline">¶</a></h2>
+<p>The Django project will use <a class="reference external" href="https://github.com/pennersr/django-allauth">django-allauth</a> for authentication. The django-allauth package provide the basic models, views and templates needed for the MVP.</p>
 </div>
 <div class="section" id="the-numerical-app">
 <h2>The &#8220;numerical&#8221; app<a class="headerlink" href="#the-numerical-app" title="Permalink to this headline">¶</a></h2>
-<p>The &#8220;numerical&#8221; application will save the user&#8217;s inputs and provide access to the model database. The application will also provide tools to manipulate and visualize data.</p>
-<p>In the future, we plan to add a bayesian network visualization tool as well as an array of different filters and signal analysis tools.</p>
-<div class="section" id="models">
-<h3>Models<a class="headerlink" href="#models" title="Permalink to this headline">¶</a></h3>
-<p>The <em>User</em> model will be imported from the &#8220;users&#8221; app. The <em>Numerical</em> model will contain the basic user inputs listed in <a class="reference internal" href="#table1"><span class="std std-numref">Table 1</span></a>. Note that the <em>ArrayField</em> and the <em>JSONField</em> are specific to postgreSQL but are available in the <em>django.contrib.postgres.fields</em> module.</p>
+<p>The &#8220;numerical&#8221; application will save the user&#8217;s inputs and sensors parameters and will provide access to the document database. The application will also provide tools to manipulate and visualize data through the python API.</p>
+<div class="section" id="models-database-tables">
+<h3>Models (Database Tables)<a class="headerlink" href="#models-database-tables" title="Permalink to this headline">¶</a></h3>
+<p>The <em>User</em> model will be imported from the &#8220;users&#8221; app. The <em>Numerical</em> model will contain the basic user inputs listed in <a class="reference internal" href="#sec-state-space"><span class="std std-ref">Construction of the Bayesian model</span></a> entered in <em>ArrayFields</em> and the Bayesian model structure saved as a <em>JSONField</em> and saved on the static file server or linked to a document database (MongoDB). The <em>Numerical</em> model will contain a <em>CharField</em> named <em>owner</em> with a ForeignKey to the <em>User</em> model. The model will also contain a <em>CharField</em> named <em>sensor</em> with a ManyToManyField to the <em>Sensor</em> model.</p>
+<p>Validators will be defined in order to make sure the matrices are invertible and that the JSON file can be generated and overwrited when the model is updated (edited).</p>
+<p>The <em>Sensor</em> model will store the sensor information as listed in <a class="reference internal" href="#table1"><span class="std std-numref">Table 1</span></a>.</p>
 <table border="1" class="colwidths-given docutils" id="table1">
-<caption><span class="caption-number">Table 1 </span><span class="caption-text">The <em>Numerical</em> model.</span><a class="headerlink" href="#table1" title="Permalink to this table">¶</a></caption>
-<colgroup>
-<col width="33%" />
-<col width="33%" />
-<col width="33%" />
-</colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">Field</th>
-<th class="head">Type</th>
-<th class="head">Details</th>
-</tr>
-</thead>
-<tbody valign="top">
-<tr class="row-even"><td>owner</td>
-<td>C</td>
-<td>ForeignKey(User)</td>
-</tr>
-<tr class="row-odd"><td>measurements</td>
-<td>C</td>
-<td>ManyToManyField(Measurement)</td>
-</tr>
-<tr class="row-even"><td>initial_states</td>
-<td>AF</td>
-<td>blank=true</td>
-</tr>
-<tr class="row-odd"><td>a_matrix</td>
-<td>AAF</td>
-<td>blank=true</td>
-</tr>
-<tr class="row-even"><td>h_matrix</td>
-<td>AAF</td>
-<td>blank=true</td>
-</tr>
-<tr class="row-odd"><td>q_matrix</td>
-<td>AAF</td>
-<td>blank=true</td>
-</tr>
-<tr class="row-even"><td>r_matrix</td>
-<td>AAF</td>
-<td>blank=true</td>
-</tr>
-<tr class="row-odd"><td>filename</td>
-<td>JF</td>
-<td>&#160;</td>
-</tr>
-</tbody>
-</table>
-<p>where &#8220;C&#8221;  is for <em>CharField</em>, &#8220;AF&#8221; for <em>ArrayField(FloatField)</em>, &#8220;AAF&#8221; for <em>ArrayField(ArrayField(FloatField))</em>, and &#8220;JF&#8221; is for <em>JSONField</em>. Validators will be defined for the ArrayFields and JSONField in order to make sure the matrices are invertible and that the JSON file can be generated and overwrited when the model is updated (edited).</p>
-<p>A <em>Measurement</em> model will be needed and constructed from the data streamed by the data source. The model attributes are presented in <a class="reference internal" href="#table2"><span class="std std-numref">Table 2</span></a>.</p>
-<table border="1" class="colwidths-given docutils" id="table2">
-<caption><span class="caption-number">Table 2 </span><span class="caption-text">The <em>Measurement</em> model.</span><a class="headerlink" href="#table2" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 1 </span><span class="caption-text">The <em>Sensor</em> model.</span><a class="headerlink" href="#table1" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col width="33%" />
 <col width="33%" />
@@ -256,37 +222,33 @@
 <td>I</td>
 <td>unique=true</td>
 </tr>
-<tr class="row-odd"><td>xname</td>
-<td>C</td>
-<td>blank=false</td>
-</tr>
-<tr class="row-even"><td>xunit</td>
+<tr class="row-odd"><td>time_units</td>
 <td>C</td>
 <td>blank=true</td>
 </tr>
-<tr class="row-odd"><td>yname</td>
+<tr class="row-even"><td>signal_name</td>
 <td>C</td>
 <td>blank=false</td>
 </tr>
-<tr class="row-even"><td>yunit</td>
+<tr class="row-odd"><td>signal_units</td>
 <td>C</td>
 <td>blank=true</td>
 </tr>
-<tr class="row-odd"><td>pubDate</td>
+<tr class="row-even"><td>pubDate</td>
 <td>DT</td>
 <td>blank=true</td>
 </tr>
-<tr class="row-even"><td>originator</td>
+<tr class="row-odd"><td>originator</td>
 <td>C</td>
 <td>blank=true</td>
 </tr>
-<tr class="row-odd"><td>filename</td>
+<tr class="row-even"><td>filename</td>
 <td>JF</td>
 <td>&#160;</td>
 </tr>
 </tbody>
 </table>
-<p>where &#8220;B&#8221; is for <em>BooleanField</em>, &#8220;I&#8221; is for <em>IntegerField</em>, and &#8220;DT&#8221; is for <em>DateTimeField</em>. The <em>is_sim</em> atribute is true if the data are simulated, and the index attribute correponds to the length of the measurment array.</p>
+<p>where &#8220;C&#8221; is for <em>CharField</em>, B&#8221; is for <em>BooleanField</em>, &#8220;I&#8221; is for <em>IntegerField</em>, and &#8220;DT&#8221; is for <em>DateTimeField</em>. The <em>filename</em> field is a link to the document database countaining  the sensor measurements. Optionally it is possible to use a &#8220;JF&#8221; for <em>JSONField</em> to store the data as a JSON file on the static file server (Amazon S3). The <em>is_sim</em> atribute is true if the data are simulated, and the index attribute correponds to the length of the measurment array.</p>
 </div>
 <div class="section" id="views">
 <h3>Views<a class="headerlink" href="#views" title="Permalink to this headline">¶</a></h3>
@@ -306,16 +268,18 @@
 </div>
 <div class="section" id="forms">
 <h3>Forms<a class="headerlink" href="#forms" title="Permalink to this headline">¶</a></h3>
-<p>The Model Form will contain the user inputs defined in <a class="reference internal" href="#sec-state-space"><span class="std std-ref">Construction of the state-space model</span></a>. The initial size of the matrices (square) will be determined by the number of signals (maximum three for the MVP). Note that the size can be ajusted be leaving zeros on the diagonal of the rows and columns to be removed. The package <a class="reference external" href="http://django-crispy-forms.readthedocs.io/en/latest/index.html">django-crispy-forms</a> seems to be an easy option for the MVP.</p>
+<p>The Model Form will contain the user inputs defined in <a class="reference internal" href="#sec-state-space"><span class="std std-ref">Construction of the Bayesian model</span></a>. Note that the size of the matrices could be ajusted be leaving zeros on the diagonal of the rows and columns to be removed. The package <a class="reference external" href="http://django-crispy-forms.readthedocs.io/en/latest/index.html">django-crispy-forms</a> seems to be an easy option for the MVP.</p>
 </div>
 </div>
 <div class="section" id="deployment">
 <h2>Deployment<a class="headerlink" href="#deployment" title="Permalink to this headline">¶</a></h2>
 <p>Follow the Heroku <a class="reference external" href="https://devcenter.heroku.com/articles/deploying-python">instructions</a>. Eventually we will follow the best practices presented in <a class="reference internal" href="#roy2015" id="id1">[GG15]</a>.</p>
+<p>Note that an amazon AWS account (<a class="reference external" href="https://aws.amazon.com/s3/?nc2=h_m1">S3</a>) and a <a class="reference external" href="https://www.mailgun.com">mailgun</a> account should be created in order to use the web application in a <em>production</em> environment.</p>
 </div>
 <div class="section" id="testing">
 <h2>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h2>
-<p>Should be inspired from the best practivces presented in the introductory book of <a class="reference internal" href="#parcival2014" id="id2">[Per14]</a>.</p>
+<p>The Python unit tests should be performed using the <a class="reference external" href="https://docs.pytest.org/en/latest/">pytest</a> package and inspired from the best practivces presented in the introductory book of <a class="reference internal" href="#parcival2014" id="id2">[Per14]</a>.</p>
+<p>The Javascrip unit test should be performed using the <a class="reference external" href="https://jasmine.github.io">Jasmine</a> package and the integration tests using the <a class="reference external" href="https://karma-runner.github.io/1.0/index.html">Karma</a> package.</p>
 </div>
 <div class="section" id="future-improvments">
 <h2>Future improvments<a class="headerlink" href="#future-improvments" title="Permalink to this headline">¶</a></h2>
