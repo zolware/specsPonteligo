@@ -179,9 +179,11 @@
 <h2>The Django framework<a class="headerlink" href="#the-django-framework" title="Permalink to this headline">¶</a></h2>
 <p>The django framework is based on a &#8220;MTV&#8221; approach – that is, &#8220;model&#8221;, &#8220;template&#8221;, and &#8220;view&#8221;. Here the word <em>model</em> refers to database tables. In other words, the Django framework uses Oject Relational Mapping (ORM) to store data.</p>
 <p>For the MVP we consider two applications (<em>users</em>, <em>numerical</em>) with three basic models:</p>
-<p>1- The <em>User</em> model, to store users details (username, passwords, etc).
-2- The <em>Numerical</em> model to link the <em>User</em> model to the document database (e.g. <a class="reference external" href="https://docs.mongodb.com">MongoDB</a>), and to store the Bayesian model parameters.
-3- The <em>Sensor</em> model to link the <em>Numerical</em> model to the document database, and to store the sensors parameters</p>
+<ol class="arabic simple">
+<li>The <em>User</em> model, to store users details (username, passwords, etc).</li>
+<li>The <em>Numerical</em> model to link the <em>User</em> model to the document database (e.g. <a class="reference external" href="https://docs.mongodb.com">MongoDB</a>), and to store the Bayesian model parameters.</li>
+<li>The <em>Sensor</em> model to link the <em>Numerical</em> model to the document database, and to store the sensors parameters</li>
+</ol>
 <p>The <em>User</em> model will be placed in the <em>user</em> application. The <em>Numerical</em> and <em>Sensor</em> models will be placed in the <em>numerical</em> application. Note that using the postgresql ORM it is possible to avoid the use of external tools such as MongoDB to store documents (e.g. JSON files). As a matter of fact, the postgresql ORM provide the <em>ArrayField</em> and the <em>JSONField</em> which are very convenient to store matrices and configuration files. These fields are available in the <em>django.contrib.postgres.fields</em> module.</p>
 </div>
 <div class="section" id="the-users-application">
